@@ -1,0 +1,32 @@
+name: Mirror Repository
+
+on:
+  push:
+    branches:
+      - main  # or whichever branch you want to trigger the mirror
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout primary repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # ensure full history is fetched for mirroring
+
+      - name: Mirror changes to secondary repository
+        env:
+          MIRROR_TOKEN: ${{ secrets.MIRROR_TOKEN }}
+        run: |
+          # Configure git with a generic username and email
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Add the secondary repository as a remote.
+          git remote add mirror https://azizbekasadov:${MIRROR_TOKEN}@github.com/azizbekasadov/MRSignTranslate-Thesis.git
+          
+          # Push all branches
+          git push mirror --all
+          
+          # Push all tags
+          git push mirror --tags
