@@ -54,7 +54,6 @@ public final class InjectionContainer: @unchecked Sendable {
                     return cachedService
                 }
                 fallthrough
-                
             case .new:
                 guard let component = generators[key]?() as? Component else {
                     preconditionFailure("\(key) is not registered as newInstance")

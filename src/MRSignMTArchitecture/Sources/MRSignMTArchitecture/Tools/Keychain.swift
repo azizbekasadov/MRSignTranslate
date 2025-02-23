@@ -9,8 +9,8 @@ import Foundation
 
 @propertyWrapper
 public struct Keychain<T> where T: Codable {
-    public let service: KeychainHelper.KeychainServiceKeys
-    public let account: KeychainHelper.KeychainAccountKeys = .swiss
+    public let service: KeychainServiceKeys
+    public let account: KeychainAccountKeys = .signMT
     
     public var wrappedValue: T? {
         get {
@@ -28,50 +28,52 @@ public struct Keychain<T> where T: Codable {
 }
 
 public protocol KeychainHelperLogic {
-    public func save<T>(
+    func save<T>(
         _ item: T,
         service: KeychainServiceKeys,
         account: KeychainAccountKeys
     ) where T: Codable
     
-    public func read<T>(
+    func read<T>(
         service: KeychainServiceKeys,
         account: KeychainAccountKeys,
         type: T.Type
     ) -> T? where T: Codable
     
-    public func save(
+    func save(
         _ data: Data,
         service: KeychainServiceKeys,
         account: KeychainAccountKeys
     ) throws
     
-    public func read(
+    func read(
         service: KeychainServiceKeys,
         account: KeychainAccountKeys
     ) throws -> Data?
     
-    public func delete(
+    func delete(
         service: KeychainServiceKeys,
         account: KeychainAccountKeys
     ) 
 }
 
+public enum KeychainServiceKeys: String {
+    case userInfo = "user-info"
+    case userName = "user-name"
+    case userSimulatedName = "user-simulated-name"
+    case userPassword = "user-password"
+}
+
+public enum KeychainAccountKeys: String {
+    case signMT
+}
+
+public enum KeychainAccessError: Error {
+    case someError(OSStatus)
+}
+
 public class KeychainHelper: KeychainHelperLogic {
-    public enum KeychainServiceKeys: String {
-        case userInfo = "user-info"
-        case userName = "user-name"
-        case userSimulatedName = "user-simulated-name"
-        case userPassword = "user-password"
-    }
     
-    public enum KeychainAccountKeys: String {
-        case signMT
-    }
-    
-    public enum KeychainAccessError: Error {
-        case someError(OSStatus)
-    }
     
     private init() {}
     

@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5D72CB372D6B924C000F55AA /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 5D72CB362D6B924C000F55AA /* RealityKitContent */; };
-		5D72CB702D6B928F000F55AA /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 5D72CB6F2D6B928F000F55AA /* Logging */; };
 		5D72CB922D6B9D32000F55AA /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D72CB912D6B9D32000F55AA /* ARKit.framework */; };
+		5DA448572D6BB3A9007B6EFC /* MRSignMTArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 5DA448562D6BB3A9007B6EFC /* MRSignMTArchitecture */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +27,7 @@
 		5D72CB352D6B924C000F55AA /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 		5D72CB4C2D6B924D000F55AA /* MRSignTranslateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MRSignTranslateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D72CB912D6B9D32000F55AA /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
+		5D72CB952D6BA50A000F55AA /* MRSignMTArchitecture */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MRSignMTArchitecture; path = ../MRSignMTArchitecture; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -61,8 +62,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D72CB922D6B9D32000F55AA /* ARKit.framework in Frameworks */,
-				5D72CB702D6B928F000F55AA /* Logging in Frameworks */,
 				5D72CB372D6B924C000F55AA /* RealityKitContent in Frameworks */,
+				5DA448572D6BB3A9007B6EFC /* MRSignMTArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,6 +80,7 @@
 		5D72CB282D6B924C000F55AA = {
 			isa = PBXGroup;
 			children = (
+				5D72CB952D6BA50A000F55AA /* MRSignMTArchitecture */,
 				5D72CB332D6B924C000F55AA /* MRSignTranslate */,
 				5D72CB342D6B924C000F55AA /* Packages */,
 				5D72CB4F2D6B924D000F55AA /* MRSignTranslateTests */,
@@ -133,7 +135,7 @@
 			name = MRSignTranslate;
 			packageProductDependencies = (
 				5D72CB362D6B924C000F55AA /* RealityKitContent */,
-				5D72CB6F2D6B928F000F55AA /* Logging */,
+				5DA448562D6BB3A9007B6EFC /* MRSignMTArchitecture */,
 			);
 			productName = MRSignTranslate;
 			productReference = 5D72CB312D6B924C000F55AA /* MRSignTranslate.app */;
@@ -191,7 +193,6 @@
 			mainGroup = 5D72CB282D6B924C000F55AA;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				5D72CB6E2D6B928F000F55AA /* XCRemoteSwiftPackageReference "swift-log" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5D72CB322D6B924C000F55AA /* Products */;
@@ -258,12 +259,13 @@
 				DEVELOPMENT_TEAM = 7FCTC6DRE7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "$(TARGET_NAME)/resources/Info.plist";
+				INFOPLIST_FILE = "$(TARGET_NAME)/app/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.1;
+				OTHER_LDFLAGS = "-disallow-use-new-driver";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azizbekasadov.MRSignTranslate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "xros xrsimulator";
@@ -285,12 +287,13 @@
 				DEVELOPMENT_TEAM = 7FCTC6DRE7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "$(TARGET_NAME)/resources/Info.plist";
+				INFOPLIST_FILE = "$(TARGET_NAME)/app/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.1;
+				OTHER_LDFLAGS = "-disallow-use-new-driver";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azizbekasadov.MRSignTranslate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "xros xrsimulator";
@@ -492,26 +495,14 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		5D72CB6E2D6B928F000F55AA /* XCRemoteSwiftPackageReference "swift-log" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-log.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.6.2;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		5D72CB362D6B924C000F55AA /* RealityKitContent */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RealityKitContent;
 		};
-		5D72CB6F2D6B928F000F55AA /* Logging */ = {
+		5DA448562D6BB3A9007B6EFC /* MRSignMTArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5D72CB6E2D6B928F000F55AA /* XCRemoteSwiftPackageReference "swift-log" */;
-			productName = Logging;
+			productName = MRSignMTArchitecture;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MRSignMTArchitecture
 
 typealias MainRouter = MainDestination.Router
 typealias SettingsRouter = SettingsDestination.Router

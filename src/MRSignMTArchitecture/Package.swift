@@ -6,28 +6,36 @@ import PackageDescription
 let package = Package(
     name: "MRSignMTArchitecture",
     platforms: [
-        .iOS(.v17),
+        .iOS(.v16),
         .macOS(.v11),
         .watchOS(.v6),
         .visionOS(.v1)
     ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "MRSignMTArchitecture",
-            targets: ["MRSignMTArchitecture"]),
+            targets: ["MRSignMTArchitecture"]
+        )
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-testing", from: "1.0.0")
+//        .package(url: "https://github.com/apple/swift-testing", from: "6.0.0"),
+        .package(url: "https://github.com/apple/swift-log.git", from: "1.6.2")
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "MRSignMTArchitecture"),
+            name: "MRSignMTArchitecture",
+            dependencies: [
+                .product(name: "Logging", package: "swift-log")
+            ]
+        ),
         .testTarget(
             name: "MRSignMTArchitectureTests",
-            dependencies: ["MRSignMTArchitecture"]
-        ),
+            dependencies: [
+                .target(name: "MRSignMTArchitecture")//,
+//                .product(name: "Testing", package: "swift-testing")
+            ],
+            swiftSettings: [.unsafeFlags(["-Xfrontend", "-enable-testing"])]
+        )
+        
     ]
 )

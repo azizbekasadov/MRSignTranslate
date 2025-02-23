@@ -1,5 +1,4 @@
 {
-  "originHash" : "d9955cb03df151caca90c441cc58e5605c41c2728afd0015b821a3b2b0452c82",
   "pins" : [
     {
       "identity" : "swift-log",
@@ -11,5 +10,5 @@
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }

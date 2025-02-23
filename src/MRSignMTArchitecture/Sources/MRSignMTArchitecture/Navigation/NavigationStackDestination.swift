@@ -8,35 +8,36 @@
 import Foundation
 import Observation
 
-protocol NavigationStackDestination: Equatable, Hashable, Codable, CustomStringConvertible {
+public protocol NavigationStackDestination: Equatable, Hashable, Codable, CustomStringConvertible {
+    
     typealias Router = NavigationStackRouter<Self>
 }
 
 extension NavigationStackDestination {
-    var description: String {
+    public var description: String {
        String(describing: self).components(separatedBy: "(").first ?? ""
-   }
+    }
 }
 
 @Observable
-class NavigationStackRouter<T: NavigationStackDestination> {
-    var path = [T]()
+public class NavigationStackRouter<T: NavigationStackDestination> {
+    public var path = [T]()
 
-    init() {}
+    public init() {}
 
-    func popToRoot() {
+    public func popToRoot() {
         logger.info("\(self) will pop to root")
         
         path.removeLast(path.count)
     }
 
-    func pushDestination(_ destination: T) {
+    public func pushDestination(_ destination: T) {
         logger.info("\(self) will go to screen: \(destination)")
         
         path.append(destination)
     }
 
-    func goBack() {
+    public func goBack() {
         logger.info("will go to back")
         
         if path.isEmpty {
@@ -51,7 +52,7 @@ class NavigationStackRouter<T: NavigationStackDestination> {
         path.removeLast()
     }
 
-    func goBack(to destination: T) {
+    public func goBack(to destination: T) {
         guard let index = path.firstIndex(of: destination) else {
             let log = "\(self) did no find \(destination.description) in the view stack"
             logger.warning("\(log)")

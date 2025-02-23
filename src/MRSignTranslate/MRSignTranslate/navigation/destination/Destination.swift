@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import MRSignMTArchitecture
 
 enum MainDestination: NavigationStackDestination {
+    case login
     case home
     case languageList
     case realTime
