@@ -26,7 +26,9 @@
 
 ## Use Cases
 🏢 **Enterprise Meetings** – Seamless MR sign language interpretation in business environments.
+
 ✈️ **Aviation & Customer Service** – Flight attendants and airport staff using MR-based sign language communication.
+
 🎥 **Real-Time Virtual Meetings** – Integration with Zoom, Microsoft Teams, and VisionOS collaboration tools.
 
 ## Roadmap
