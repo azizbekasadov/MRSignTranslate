@@ -18,18 +18,22 @@
    ```sh
    git clone https://github.com/your-username/MRSignTranslate.git
    cd MRSignTranslate
+   ```
 
    Run on VisionOS simulator or device
 
 2. Open in Xcode and select VisionOS as the target device.
 
 ## Use Cases
-	•	🏢 **Enterprise Meetings** – Seamless MR sign language interpretation in business environments.
-	•	✈️ **Aviation & Customer Service** – Flight attendants and airport staff using MR-based sign language communication.
-	•	🎥 **Real-Time Virtual Meetings** – Integration with Zoom, Microsoft Teams, and VisionOS collaboration tools.
+🏢 **Enterprise Meetings** – Seamless MR sign language interpretation in business environments.
+✈️ **Aviation & Customer Service** – Flight attendants and airport staff using MR-based sign language communication.
+🎥 **Real-Time Virtual Meetings** – Integration with Zoom, Microsoft Teams, and VisionOS collaboration tools.
 
 ## Roadmap
 🔹 Integrate AI-powered sign recognition
+
 🔹 Enhance UI/UX for accessibility in MR
+
 🔹 Improve real-time communication between deaf and hearing users
+
 🔹 Test & deploy on Vision Pro
