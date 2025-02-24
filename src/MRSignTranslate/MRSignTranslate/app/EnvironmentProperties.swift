@@ -10,7 +10,7 @@ import Foundation
 enum EnvironmentProperties {
     enum Keys {
         static let apiKey = "SIGN_MT"
-        static let baseUrl = "SWISS_BASE_URL"
+        static let baseUrl = "SIGN_MT_BASE_URL"
         static let srsBaseUrl = "SRS_BASE_URL"
     }
     
