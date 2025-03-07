@@ -24,10 +24,10 @@ struct MRSignTranslateApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $router.path) {
-                SplashScreen()
+                MainSplitView()
                     .navigationDestination(for: MainDestination.self, destination: DestinationFactory.viewForDemoDestination)
             }
-            .preferredColorScheme(.light)
+            .preferredColorScheme(.dark)
             .modelContainer(dataStorageManager.selectedContainer)
             .onChange(of: router.path) { oldValue, newValue in
                 print("oldPath", oldValue)
