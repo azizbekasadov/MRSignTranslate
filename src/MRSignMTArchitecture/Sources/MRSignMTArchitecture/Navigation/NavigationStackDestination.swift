@@ -9,7 +9,6 @@ import Foundation
 import Observation
 
 public protocol NavigationStackDestination: Equatable, Hashable, Codable, CustomStringConvertible {
-    
     typealias Router = NavigationStackRouter<Self>
 }
 

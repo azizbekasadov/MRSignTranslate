@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct SettingsScreen: View {
+    @Environment(\.openURL) private var openURL
+    
+    
+    @StateObject private var viewModel: SettingsModel = .init()
     @State private var path: [SettingsDestination] = []
 
     var body: some View {
@@ -31,12 +35,34 @@ struct SettingsScreen: View {
 
                 Section("Support") {
                     settingsRow("Contact Us", destination: .support(.contactUs))
+                        .onTapGesture {
+                            viewModel.handleSupport()
+                        }
                     settingsRow("About", destination: .support(.about))
                 }
             }
             .navigationTitle("Settings")
             .navigationDestination(for: SettingsDestination.self) { destination in
-                SettingsDetailView(destination: destination)
+                switch destination {
+                case .general(let option):
+                    switch option {
+                    case .language:
+                        LanguageListView(destination: destination)
+                    case .privacy, .terms:
+                        LegalWebView(destination: option)
+                    default:
+                        SettingsDetailView(destination: destination)
+                    }
+                case .support(let option):
+                    switch option {
+                    case .contactUs:
+                        EmptyView()
+                    default:
+                        SettingsDetailView(destination: destination)
+                    }
+                default:
+                    SettingsDetailView(destination: destination)
+                }
             }
         }
         .scrollBounceBehavior(.always)
@@ -62,7 +88,7 @@ struct SettingsDetailView: View {
             Text(detailText(for: destination))
                 .font(.title2)
                 .padding()
-
+            
             Spacer()
         }
         .navigationTitle(title(for: destination))
@@ -92,7 +118,7 @@ struct SettingsDetailView: View {
         case .general(.privacy): return "Review our privacy policies."
         case .general(.terms): return "Read our terms and conditions."
         case .general(.appearance): return "Customize the app's appearance."
-        case .mode(.offlineOnline): return "Switch between offline and online modes."
+        case .mode(.offlineOnline): return "Switch between offline and online modes. Currently not supported"
         case .voice(.input): return "Configure voice input settings."
         case .voice(.output): return "Adjust voice output settings."
         }

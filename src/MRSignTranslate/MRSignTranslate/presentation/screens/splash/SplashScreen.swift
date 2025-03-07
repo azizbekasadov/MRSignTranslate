@@ -24,6 +24,15 @@ struct SplashScreen: View {
     @StateObject private var viewModel: SplashViewModel = .init()
 
     var body: some View {
+        #if os(visionOS)
+        MainView()
+            .glassBackgroundEffect(displayMode: .always)
+        #else
+        MainView()
+        #endif
+    }
+    
+    private func MainView() -> some View {
         VStack(spacing: 40) {
             VStack {
                 Image(Constants.Images.appIcon)
@@ -34,7 +43,7 @@ struct SplashScreen: View {
                 
                 VStack(spacing: 20) {
                     Text(Constants.Texts.title)
-                        .font(.extraLargeTitle)
+                        .font(.largeTitle)
                         .lineLimit(nil)
                         .multilineTextAlignment(.center)
                         
@@ -64,7 +73,6 @@ struct SplashScreen: View {
         }
         .padding(50)
         .frame(maxWidth: 850)
-        .glassBackgroundEffect(displayMode: .always)
     }
 }
 

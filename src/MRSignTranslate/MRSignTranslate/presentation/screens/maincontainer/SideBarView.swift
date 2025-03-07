@@ -52,8 +52,8 @@ struct SidebarView: View {
                 VisualEffectBlur(
                     blurStyle: .systemUltraThinMaterialDark
                 )
-                .clipShape(RoundedRectangle(cornerRadius: geometry.size.height*0.5))
-                .overlay(RoundedRectangle(cornerRadius: geometry.size.height*0.5)
+                .clipShape(RoundedRectangle(cornerRadius: geometry.size.height*0.25))
+                .overlay(RoundedRectangle(cornerRadius: geometry.size.height*0.25)
                     .stroke(
                         Color.white.opacity(0.3),
                         lineWidth: 1

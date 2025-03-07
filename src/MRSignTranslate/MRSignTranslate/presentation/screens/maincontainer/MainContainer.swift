@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainSplitView: View {
-    @State private var selectedSection: SidebarSection? = .home
+    @State private var selectedSection: SidebarSection? = .settings
     @State private var searchText: String = ""
 
     var body: some View {

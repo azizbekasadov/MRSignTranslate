@@ -24,7 +24,7 @@ struct MRSignTranslateApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $router.path) {
-                MainSplitView()
+                SettingsScreen()//MainSplitView()
                     .navigationDestination(for: MainDestination.self, destination: DestinationFactory.viewForDemoDestination)
             }
             .preferredColorScheme(.dark)
@@ -43,5 +43,6 @@ private extension MRSignTranslateApp {
         InjectionContainer.register(type: MainRouter.self, as: .singleton, router)
         InjectionContainer.register(type: UserRepository.self, UserRepositoryImpl())
         InjectionContainer.register(type: RemoteRepository.self, RemoteRepositoryImpl())
+        InjectionContainer.register(type: EmailServiceProtocol.self, EmailService())
     }
 }
