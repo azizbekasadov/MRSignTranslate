@@ -19,7 +19,7 @@ class DestinationFactory {
             // TODO: Language List and RealTime
         case .languageList: EmptyView().navigationBarBackButtonHidden()
         case .realTime: EmptyView().navigationBarBackButtonHidden()
-        case .home: EmptyView().navigationBarBackButtonHidden()
+        case .home: MainSplitView().navigationBarBackButtonHidden()
         case .recordings: EmptyView().navigationBarBackButtonHidden()
         case .login: EmptyView().navigationBarBackButtonHidden()
         }
