@@ -6,66 +6,45 @@
 //
 
 import SwiftUI
+import MRSignMTArchitecture
 
 struct SettingsScreen: View {
     @Environment(\.openURL) private var openURL
-    
+    @Inject private var router: SettingsRouter
     
     @StateObject private var viewModel: SettingsModel = .init()
-    @State private var path: [SettingsDestination] = []
-
+    
     var body: some View {
-        NavigationStack(path: $path) {
-            List {
-                Section("General") {
-                    settingsRow("Language", destination: .general(.language))
-                    settingsRow("Privacy", destination: .general(.privacy))
-                    settingsRow("Terms & Conditions", destination: .general(.terms))
-                    settingsRow("Appearance", destination: .general(.appearance))
-                }
-
-                Section("Mode") {
-                    settingsRow("Offline / Online", destination: .mode(.offlineOnline))
-                }
-
-                Section("Voice") {
-                    settingsRow("Voice Input", destination: .voice(.input))
-                    settingsRow("Voice Output", destination: .voice(.output))
-                }
-
-                Section("Support") {
-                    settingsRow("Contact Us", destination: .support(.contactUs))
-                        .onTapGesture {
-                            viewModel.handleSupport()
-                        }
-                    settingsRow("About", destination: .support(.about))
-                }
+        List {
+            Section("General") {
+                settingsRow("Language", destination: .general(.language))
+                settingsRow("Privacy", destination: .general(.privacy))
+                settingsRow("Terms & Conditions", destination: .general(.terms))
+                settingsRow("Appearance", destination: .general(.appearance))
             }
-            .navigationTitle("Settings")
-            .navigationDestination(for: SettingsDestination.self) { destination in
-                switch destination {
-                case .general(let option):
-                    switch option {
-                    case .language:
-                        LanguageListView(destination: destination)
-                    case .privacy, .terms:
-                        LegalWebView(destination: option)
-                    default:
-                        SettingsDetailView(destination: destination)
+
+            Section("Mode") {
+                settingsRow("Offline / Online", destination: .mode(.offlineOnline))
+            }
+
+            Section("Voice") {
+                settingsRow("Voice Input", destination: .voice(.input))
+                settingsRow("Voice Output", destination: .voice(.output))
+            }
+
+            Section("Support") {
+                settingsRow("Contact Us", destination: .support(.contactUs))
+                    .onTapGesture {
+                        viewModel.handleSupport()
                     }
-                case .support(let option):
-                    switch option {
-                    case .contactUs:
-                        EmptyView()
-                    default:
-                        SettingsDetailView(destination: destination)
-                    }
-                default:
-                    SettingsDetailView(destination: destination)
-                }
+                settingsRow("About", destination: .support(.about))
             }
         }
-        .scrollBounceBehavior(.always)
+        .navigationTitle("Settings")
+        .navigationDestination(
+            for: SettingsDestination.self,
+            destination: SettingsDestinationFactory.viewForDemoDestination
+        )
     }
 
     // MARK: - Helper for Navigation Links
@@ -119,12 +98,14 @@ struct SettingsDetailView: View {
         case .general(.terms): return "Read our terms and conditions."
         case .general(.appearance): return "Customize the app's appearance."
         case .mode(.offlineOnline): return "Switch between offline and online modes. Currently not supported"
-        case .voice(.input): return "Configure voice input settings."
-        case .voice(.output): return "Adjust voice output settings."
+        case .voice(.input): return "Voice input language selection is not yet implemented." //"Configure voice input settings."
+        case .voice(.output): return "Voice output language selection is not yet implemented."//"Adjust voice output settings."
         }
     }
 }
 
 #Preview {
-    SettingsScreen()
+    NavigationStack {
+        SettingsScreen()
+    }
 }

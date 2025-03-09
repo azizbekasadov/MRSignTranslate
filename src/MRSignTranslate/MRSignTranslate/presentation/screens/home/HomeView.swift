@@ -16,3 +16,10 @@ struct HomeView: View {
         }
     }
 }
+
+#Preview {
+    NavigationView(content: {
+        HomeView()
+            .navigationTitle("Home")
+    })
+}

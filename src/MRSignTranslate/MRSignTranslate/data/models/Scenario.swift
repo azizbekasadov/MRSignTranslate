@@ -12,6 +12,7 @@ struct Scenario: Identifiable, CustomLocalizedStringResourceConvertible {
     let title: String
     let thumbnail: String
     let backgroundImage: String
+    let level: Level
     let description: String
     let instructions: [Instruction]
     
@@ -19,3 +20,9 @@ struct Scenario: Identifiable, CustomLocalizedStringResourceConvertible {
 }
 
 typealias Instruction = String // TODO: set up Instruction object
+
+enum Level: String, CaseIterable {
+    case easy
+    case medium
+    case hard
+}

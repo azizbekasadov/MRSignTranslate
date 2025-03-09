@@ -37,7 +37,6 @@ final class SplashViewModel: ObservableObject {
     private func handleCheckLoginState() {
         Task {
             do {
-                try await Task.sleep(nanoseconds: 3_000_000_000)
                 let loginState = try await userUseCases.checkLoginState()
                 
                 switch loginState {

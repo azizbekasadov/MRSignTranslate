@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "puerto rico.png",
+      "filename" : "cuba.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "puerto rico@2x.png",
+      "filename" : "cuba@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "puerto rico@3x.png",
+      "filename" : "cuba@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

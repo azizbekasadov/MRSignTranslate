@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LanguageListView: View {
-    let destination: SettingsDestination
+    let destination: SettingsCategories.General
     
     @State private var searchText = ""
     @State private var selectedLanguage: LocaleCountry = .america // Default selection
@@ -17,52 +17,46 @@ struct LanguageListView: View {
         LocaleCountry
             .allCases
             .sorted { $0.description < $1.description }
-//            .filter {
-//                searchText.isEmpty ||
-//                $0.title.lowercased().contains(searchText.lowercased()) ||
-//                $0.description.lowercased().contains(searchText.lowercased())
-//            }
+            .filter {
+                searchText.isEmpty ||
+                $0.title.lowercased().contains(searchText.lowercased()) ||
+                $0.description.lowercased().contains(searchText.lowercased())
+            }
             .filter { $0 != selectedLanguage }
     }
     
     var body: some View {
-        NavigationStack {
-            VStack {
-                Text("🌍 Select Language")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .padding(.top, 16)
+        VStack {
+            List {
+                // Top Section for Selected Language
+                Section(header: Text("Selected Language").foregroundColor(.gray)) {
+                    ListRow(item: selectedLanguage)
+                        .onTapGesture {
+                            // Handle selected language tap
+                        }
+                }
                 
-                List {
-                    // Top Section for Selected Language
-                    Section(header: Text("Selected Language").foregroundColor(.gray)) {
-                        ListRow(item: selectedLanguage)
+                // Main Language List
+                Section(header: Text("All Languages").foregroundColor(.gray)) {
+                    ForEach(filteredLanguages, id: \.self) { language in
+                        ListRow(item: language)
                             .onTapGesture {
-                                // Handle selected language tap
+                                selectedLanguage = language
                             }
                     }
-                    
-                    // Main Language List
-                    Section(header: Text("All Languages").foregroundColor(.gray)) {
-                        ForEach(filteredLanguages, id: \.self) { language in
-                            ListRow(item: language)
-                                .onTapGesture {
-                                    selectedLanguage = language
-                                }
-                        }
-                    }
                 }
-                .listStyle(.insetGrouped)
-                .padding(.bottom, 20)
             }
-            .background(Color(.systemBackground))
+            .listStyle(.insetGrouped)
+            .padding(.bottom, 20)
         }
+        .background(Color(.systemBackground))
+        .navigationTitle("🌍 Select Language")
     }
 }
 
-#Preview {
-    LanguageListView(destination: .general(.language))
-}
+#Preview(body: {
+    LanguageListView(destination: .language)
+})
 
 // MARK: - Generic List Row View
 struct ListRow: View {
@@ -84,3 +78,7 @@ struct ListRow: View {
         .padding(.vertical, 2)
     }
 }
+
+#Preview(body: {
+    ListRow(item: LanguageData.allLanguages[0])
+})

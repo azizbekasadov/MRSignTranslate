@@ -10,23 +10,11 @@ import SwiftUI
 import SwiftData
 
 struct SplashScreen: View {
-    private enum Constants {
-        enum Texts {
-            static let title: String = "Welcome to the MR SignMT"
-            static let description: String = "Step into a new era of communication with SignMR on VisionOS, where real-time sign language translation meets immersive Mixed Reality for effortless interaction"
-        }
-        
-        enum Images {
-            static let appIcon: String = "appicon"
-        }
-    }
-    
     @StateObject private var viewModel: SplashViewModel = .init()
 
     var body: some View {
         #if os(visionOS)
         MainView()
-            .glassBackgroundEffect(displayMode: .always)
         #else
         MainView()
         #endif
@@ -34,27 +22,10 @@ struct SplashScreen: View {
     
     private func MainView() -> some View {
         VStack(spacing: 40) {
-            VStack {
-                Image(Constants.Images.appIcon)
-                    .resizable()
-                    .frame(width: 150, height: 150)
-                    .cornerRadius(75, corners: .allCorners)
-                    .shadow(radius: 10)
-                
-                VStack(spacing: 20) {
-                    Text(Constants.Texts.title)
-                        .font(.largeTitle)
-                        .lineLimit(nil)
-                        .multilineTextAlignment(.center)
-                        
-                    Text(Constants.Texts.description)
-                        .font(.title)
-                        .multilineTextAlignment(.center)
-                        .lineLimit(nil)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .padding(.top, 30)
-            }
+            SplashView()
+                .frame(alignment: .center)
+            
+            Spacer()
             
             if viewModel.isLoading {
                 ProgressView()
@@ -69,15 +40,17 @@ struct SplashScreen: View {
                     )
                 )
             }
-
         }
-        .padding(50)
-        .frame(maxWidth: 850)
+        .padding(.top, 150)
+        .padding([.horizontal, .bottom], 50)
+        
     }
 }
 
 struct SplashScreen_Previews: PreviewProvider {
     static var previews: some View {
         SplashScreen()
+            .frame(maxWidth: 850)
+            .glassBackgroundEffect(displayMode: .always)
     }
 }

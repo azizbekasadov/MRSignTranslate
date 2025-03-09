@@ -74,7 +74,7 @@ extension LocaleCountry: LanguageListable {
         case .croatia: return "🇭🇷"
         case .czechRepublic: return "🇨🇿"
         case .denmark: return "🇩🇰"
-        case .indiaEnglish, .indiaHindi, .indiaBengali, .indiaTamil, .indiaTelugu: return "🇮🇳"
+        case .indiaHindi: return "🇮🇳"
         case .newZealand: return "🇳🇿"
         case .estonia: return "🇪🇪"
         case .finland: return "🇫🇮"
@@ -107,7 +107,6 @@ extension LocaleCountry: LanguageListable {
     }
     
     var description: String {
-//        displayName // Human-readable name (e.g., "French", "German")
-        Locale(identifier: self.rawValue).language.languageCode?.debugDescription ?? ""
+        Locale(identifier: self.rawValue).localizedString(forLanguageCode: self.rawValue) ?? ""
     }
 }

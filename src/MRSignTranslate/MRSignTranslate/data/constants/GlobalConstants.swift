@@ -9,8 +9,9 @@ import Foundation
 
 enum GlobalConstants {
     enum URLs {
-        static let terms: URL = .init(string: "https://research.sign.mt/")!
-        static let privacy: URL = .init(string: "https://research.sign.mt/")!
+        static let terms: URL = .init(string: "https://sign.mt/legal/terms")!
+        static let privacy: URL = .init(string: "https://sign.mt/legal/privacy")!
+        static let legal: URL = .init(string: "https://sign.mt/legal/licenses")!
     }
     
     enum Email {

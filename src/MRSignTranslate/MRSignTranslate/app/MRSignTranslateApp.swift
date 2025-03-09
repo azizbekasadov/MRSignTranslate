@@ -24,8 +24,11 @@ struct MRSignTranslateApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $router.path) {
-                SettingsScreen()//MainSplitView()
-                    .navigationDestination(for: MainDestination.self, destination: DestinationFactory.viewForDemoDestination)
+                SplashScreen()
+                    .navigationDestination(
+                        for: MainDestination.self,
+                        destination: DestinationFactory.viewForDemoDestination
+                    )
             }
             .preferredColorScheme(.dark)
             .modelContainer(dataStorageManager.selectedContainer)
@@ -41,6 +44,12 @@ private extension MRSignTranslateApp {
     func setupInjectionContainer() {
         InjectionContainer.register(type: DataStorageManager.self, as: .singleton, dataStorageManager)
         InjectionContainer.register(type: MainRouter.self, as: .singleton, router)
+        InjectionContainer.register(type: SettingsRouter.self, as: .singleton, SettingsRouter())
+        InjectionContainer.register(
+            type: SettingsConfigurationManagerProtocol.self,
+            as: .singleton,
+            SettingsConfigurationManager()
+        )
         InjectionContainer.register(type: UserRepository.self, UserRepositoryImpl())
         InjectionContainer.register(type: RemoteRepository.self, RemoteRepositoryImpl())
         InjectionContainer.register(type: EmailServiceProtocol.self, EmailService())

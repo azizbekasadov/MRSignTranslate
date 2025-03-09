@@ -8,5 +8,7 @@
 import Foundation
 
 protocol Saveable {
-    func save()
+    
+    @discardableResult
+    func save() -> Self
 }
