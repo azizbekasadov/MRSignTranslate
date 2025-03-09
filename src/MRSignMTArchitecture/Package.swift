@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "MRSignMTArchitecture",
     platforms: [
-        .iOS(.v16),
+        .iOS(.v17),
         .macOS(.v11),
         .watchOS(.v6),
         .visionOS(.v1)

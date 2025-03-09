@@ -43,6 +43,9 @@ final class UserRepositoryImpl: UserRepository {
     }
     
     func checkLoginState() async throws -> LoginState {
+        #if DEBUG
+        return .loggedIn
+        #else
         do {
             let userModel = try await fetchUserModel()
             let userModelData = try JSONEncoder().encode(userModel)
@@ -57,6 +60,7 @@ final class UserRepositoryImpl: UserRepository {
         } catch {
             return .loggedOut
         }
+        #endif
     }
     
     func getUserInfo() async throws {
