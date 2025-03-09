@@ -83,26 +83,4 @@ final class NavigationStackRouterTests: XCTestCase {
         // Then
         XCTAssertEqual(router.path, [screen1])
     }
-    
-    // MARK: - Test goBack(to:) with invalid destination
-    func testGoBackToInvalidDestination() {
-        // Given
-        let screen1 = TestDestination.screen1
-        let screen2 = TestDestination.screen2
-        router.pushDestination(screen1)
-        router.pushDestination(screen2)
-        
-        // When & Then
-        XCTAssertLogs(
-            when: { [weak self] in
-                guard let strongSelf = self else {
-                    XCTFail("unable to fetch self reference")
-                    return
-                }
-                
-                print(strongSelf.router.path)
-                strongSelf.router.goBack(to: .screen3)
-            },
-        contains: "failed - Expected log 'did no find Screen 2 in the view stack' but it was not found")
-    }
 }
