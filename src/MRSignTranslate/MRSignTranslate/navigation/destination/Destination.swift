@@ -14,6 +14,7 @@ enum MainDestination: NavigationStackDestination {
     case languageList
     case realTime
     case recordings
+    case settings
 }
 
 enum SettingsDestination: NavigationStackDestination {
@@ -24,23 +25,23 @@ enum SettingsDestination: NavigationStackDestination {
 }
 
 enum SettingsCategories {
-    enum Support: NavigationStackDestination {
+    enum Support: Codable, NavigationStackDestination {
         case contactUs
         case about
     }
     
-    enum General: NavigationStackDestination {
+    enum General: Codable, NavigationStackDestination {
         case language
         case privacy
         case terms
         case appearance
     }
     
-    enum Mode: NavigationStackDestination {
+    enum Mode: Codable, NavigationStackDestination {
         case offlineOnline
     }
     
-    enum Voice: NavigationStackDestination {
+    enum Voice: Codable, NavigationStackDestination {
         case input
         case output
     }

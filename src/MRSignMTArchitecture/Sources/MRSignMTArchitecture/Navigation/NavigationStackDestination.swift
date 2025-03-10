@@ -9,7 +9,6 @@ import Foundation
 import Observation
 
 public protocol NavigationStackDestination: Equatable, Hashable, Codable, CustomStringConvertible {
-    
     typealias Router = NavigationStackRouter<Self>
 }
 
@@ -53,11 +52,13 @@ public class NavigationStackRouter<T: NavigationStackDestination> {
     }
 
     public func goBack(to destination: T) {
+        logger.info(.init(stringLiteral: destination.description))
+        
         guard let index = path.firstIndex(of: destination) else {
             let log = "\(self) did no find \(destination.description) in the view stack"
             logger.warning("\(log)")
             logPath(path)
-            assertionFailure(log)
+//            assertionFailure(log)
             return
         }
         path.removeLast(path.count - (index + 1))

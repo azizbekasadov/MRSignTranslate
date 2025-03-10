@@ -19,5 +19,11 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>For speech recognition</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Speech recognition will be used to transcribe audio for translation</string>
+	<key>NSCameraUsageDescription</key>
+	<string>For sign language recognition</string>
 </dict>
 </plist>

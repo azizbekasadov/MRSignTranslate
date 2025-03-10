@@ -25,9 +25,12 @@ struct MRSignTranslateApp: App {
         WindowGroup {
             NavigationStack(path: $router.path) {
                 SplashScreen()
-                    .navigationDestination(for: MainDestination.self, destination: DestinationFactory.viewForDemoDestination)
+                    .navigationDestination(
+                        for: MainDestination.self,
+                        destination: DestinationFactory.viewForDemoDestination
+                    )
             }
-            .preferredColorScheme(.light)
+            .preferredColorScheme(.dark)
             .modelContainer(dataStorageManager.selectedContainer)
             .onChange(of: router.path) { oldValue, newValue in
                 print("oldPath", oldValue)
@@ -41,7 +44,14 @@ private extension MRSignTranslateApp {
     func setupInjectionContainer() {
         InjectionContainer.register(type: DataStorageManager.self, as: .singleton, dataStorageManager)
         InjectionContainer.register(type: MainRouter.self, as: .singleton, router)
+        InjectionContainer.register(type: SettingsRouter.self, as: .singleton, SettingsRouter())
+        InjectionContainer.register(
+            type: SettingsConfigurationManagerProtocol.self,
+            as: .singleton,
+            SettingsConfigurationManager()
+        )
         InjectionContainer.register(type: UserRepository.self, UserRepositoryImpl())
         InjectionContainer.register(type: RemoteRepository.self, RemoteRepositoryImpl())
+        InjectionContainer.register(type: EmailServiceProtocol.self, EmailService())
     }
 }

@@ -18,6 +18,9 @@ final class SplashViewModel: ObservableObject {
 
     @Inject private var router: MainRouter
     @Inject private var storageManager: DataStorageManager
+    
+    @Published var isLoading: Bool = false
+    
     private var userUseCases = UserUseCases()
         
     func dispatch(_ intent: SplashIntent) {
@@ -34,21 +37,18 @@ final class SplashViewModel: ObservableObject {
     private func handleCheckLoginState() {
         Task {
             do {
-//                try await Task.sleep(nanoseconds: 3_000_000_000)
-//                let loginState = try await userUseCases.checkLoginState()
-//                
-//                
-//                switch loginState {
-//                case .loggedIn, .superUser:
-//                    await MainActor.run {
-//                        router.pushDestination(.home)
-//                    }
-//                    
-//                case .loggedOut, .demoUser:
-//                    logger.info("Setting Store ModelContanier")
-//                    storageManager.switchToStoreContainer()
-//                    router.pushDestination(.login)
-//                }
+                let loginState = try await userUseCases.checkLoginState()
+                
+                switch loginState {
+                case .loggedIn, .superUser:
+                    await MainActor.run {
+                        router.pushDestination(.home)
+                    }
+                case .loggedOut, .demoUser:
+                    logger.info("Setting Store ModelContanier")
+                    storageManager.switchToStoreContainer()
+                    router.pushDestination(.login)
+                }
             }
             catch {
                 router.pushDestination(.login)

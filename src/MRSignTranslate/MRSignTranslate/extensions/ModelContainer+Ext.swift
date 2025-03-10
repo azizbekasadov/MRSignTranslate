@@ -9,7 +9,6 @@ import Foundation
 import SwiftData
 import MRSignMTArchitecture
 
-// #if DEBUG
 @MainActor
 extension ModelContainer {
     static func preview() async -> ModelContainer {
@@ -25,7 +24,7 @@ extension ModelContainer {
             fatalError("[ModelContainer] static preview(taskLists:): \(error.localizedDescription)")
         }
     }
-//    
+   
     static func store() -> ModelContainer {
         do {
             let config = ModelConfiguration(isStoredInMemoryOnly: false)
@@ -38,7 +37,7 @@ extension ModelContainer {
             fatalError("Hub Concierge: ModelContainer failed to create instance: \(error.localizedDescription)")
         }
     }
-//
+
     static func deleteAll(context: ModelContext) throws {
         try context.delete(model: UserEntity.self)
     }
