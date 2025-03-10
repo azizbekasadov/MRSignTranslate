@@ -22,6 +22,6 @@ struct User: Codable {
     }
     
     static let mock: User = .init(
-        username: UUID().uuidString + Date().description
+        username: "DEMO-USER"//UUID().uuidString + Date().description
     )
 }

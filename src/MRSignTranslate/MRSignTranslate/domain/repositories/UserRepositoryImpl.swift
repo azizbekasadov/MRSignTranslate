@@ -17,7 +17,7 @@ final class UserRepositoryImpl: UserRepository {
     var userModel: User?
     
     func getUser() async throws -> User {
-        return userModel ?? User(username: UUID().uuidString)
+        return userModel ?? User(username: "DEMO-USER")//UUID().uuidString)
     }
     
     func login(userName: String, password: String, simulatedUser: String) async -> LoginState {
@@ -35,7 +35,11 @@ final class UserRepositoryImpl: UserRepository {
     
     func loginWithSuperUser(userName: String, password: String, simulatedUser: String) async -> LoginState {
         do {
-            let state = try await createSession(username: userName, password: password, simulatedUser: simulatedUser)
+            let state = try await createSession(
+                username: userName,
+                password: password,
+                simulatedUser: simulatedUser
+            )
             return state
         } catch {
             return .loggedOut

@@ -6,11 +6,17 @@
 //
 
 import SwiftUI
+import Observation
+import MRSignMTArchitecture
 
 struct MainSplitView: View {
-    @State private var selectedSection: SidebarSection? = .settings
+    @Inject private var router: MainRouter
+    @State private var selectedSection: SidebarSection? = .scenarios
     
-    private let sections: [SidebarSection] = SidebarSection.allCases.sorted(
+    private let sections: [SidebarSection] = [
+        .scenarios,
+        .settings
+    ].sorted(
         by: { $0.order < $1.order }
     )
     
@@ -20,6 +26,7 @@ struct MainSplitView: View {
         } detail: {
             DetailView()
         }
+        .navigationSplitViewStyle(.prominentDetail)
     }
     
     @ViewBuilder
@@ -36,15 +43,23 @@ struct MainSplitView: View {
     
     @ViewBuilder
     private func SideView() -> some View {
-        List(
-            sections,
-            id: \.self,
-            selection: $selectedSection
-        ) { section in
-            SectionView(section)
+        VStack {
+            List(
+                sections,
+                id: \.self,
+                selection: $selectedSection
+            ) { section in
+                SectionView(section)
+            }
+            .listStyle(.sidebar)
+            .navigationTitle("Menu")
+            
+            Spacer()
+            
+            UserFooterView()
+                .padding(.horizontal, 6)
+                .padding(.bottom, 16)
         }
-        .listStyle(.sidebar)
-        .navigationTitle("Menu")
     }
     
     @ViewBuilder

@@ -20,7 +20,7 @@ struct GetButton: View {
         }
         
         enum Paddings {
-            static let horizontal: CGFloat = 24
+            static let horizontal: CGFloat = 12
             static let vertical: CGFloat = 6
         }
     }
@@ -42,18 +42,16 @@ struct GetButton: View {
         } label: {
             Text(title)
                 .foregroundStyle(Color(UIColor.label))
-                .font(.system(size: 18, weight: .semibold))
-                .padding(.horizontal, 20)
-                .padding(.vertical, 6)
+                .font(.system(size: 10, weight: .semibold))
+                .padding(.horizontal, Constants.Paddings.horizontal)
+                .padding(.vertical, Constants.Paddings.vertical)
                 .layoutPriority(0)
         }
         .font(Font.system(.caption).bold())
-        .padding(.horizontal, Constants.Paddings.horizontal)
-        .padding(.vertical, Constants.Paddings.vertical)
         .background(Constants.Colors.backgroundColor)
         .clipShape(Capsule())
         .buttonStyle(.plain)
-        .controlSize(.extraLarge)
+        .hoverEffect(.lift)
     }
 }
 

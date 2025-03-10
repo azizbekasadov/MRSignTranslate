@@ -11,9 +11,10 @@ import MRSignMTArchitecture
 
 @main
 struct MRSignTranslateApp: App {
-    @Bindable var router = MainRouter()
+    @Bindable private var router = MainRouter()
+    @Bindable private var settingsConfigurator = SettingsConfigurationManager()
     
-    let dataStorageManager = DataStorageManager(
+    private let dataStorageManager = DataStorageManager(
         container: .store()
     )
     
@@ -24,11 +25,19 @@ struct MRSignTranslateApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $router.path) {
-                SplashScreen()
-                    .navigationDestination(
-                        for: MainDestination.self,
-                        destination: DestinationFactory.viewForDemoDestination
-                    )
+                if settingsConfigurator.hasShownWelcomeMessage {
+                    MainSplitView()
+                        .navigationDestination(
+                            for: MainDestination.self,
+                            destination: DestinationFactory.viewForDemoDestination
+                        )
+                } else {
+                    SplashScreen()
+                        .navigationDestination(
+                            for: MainDestination.self,
+                            destination: DestinationFactory.viewForDemoDestination
+                        )
+                }
             }
             .preferredColorScheme(.dark)
             .modelContainer(dataStorageManager.selectedContainer)
@@ -46,9 +55,9 @@ private extension MRSignTranslateApp {
         InjectionContainer.register(type: MainRouter.self, as: .singleton, router)
         InjectionContainer.register(type: SettingsRouter.self, as: .singleton, SettingsRouter())
         InjectionContainer.register(
-            type: SettingsConfigurationManagerProtocol.self,
+            type: SettingsConfigurationManager.self,
             as: .singleton,
-            SettingsConfigurationManager()
+            settingsConfigurator
         )
         InjectionContainer.register(type: UserRepository.self, UserRepositoryImpl())
         InjectionContainer.register(type: RemoteRepository.self, RemoteRepositoryImpl())

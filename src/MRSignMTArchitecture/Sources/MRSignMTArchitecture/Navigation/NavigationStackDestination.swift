@@ -8,7 +8,7 @@
 import Foundation
 import Observation
 
-public protocol NavigationStackDestination: Equatable, Hashable, Codable, CustomStringConvertible {
+public protocol NavigationStackDestination: Equatable, Hashable, Codable {//, CustomStringConvertible {
     typealias Router = NavigationStackRouter<Self>
 }
 
@@ -23,6 +23,12 @@ public class NavigationStackRouter<T: NavigationStackDestination> {
     public var path = [T]()
 
     public init() {}
+    
+    public func setRoot(_ destination: T) {
+        logger.info("\(destination) will be a new root")
+        path.removeLast(path.count)
+        pushDestination(destination)
+    }
 
     public func popToRoot() {
         logger.info("\(self) will pop to root")

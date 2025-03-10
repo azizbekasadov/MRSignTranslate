@@ -41,8 +41,8 @@ struct GlassButtonStyle: ButtonStyle {
             RoundedRectangle(cornerRadius: size.height / 2)
                 .stroke(Color.white.opacity(0.3), lineWidth: 1)
         )
-        .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-        .animation(.easeInOut(duration: 0.2), value: configuration.isPressed)
+        .scaleEffect(configuration.isPressed ? 0.85 : 1.0)
+        .animation(.easeInOut(duration: 0.3), value: configuration.isPressed)
     }
 }
 

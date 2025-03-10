@@ -8,69 +8,136 @@
 import SwiftUI
 import MRSignMTArchitecture
 
-extension Scenario {
-    static let scenarios: [Scenario] = [
-        Scenario(
-            id: UUID(),
-            title: "Mix fear and fishing in dredge",
-            thumbnail: "mocks/scenario/chip_bg",
-            backgroundImage: "dredge_bg",
-            level: .easy,
-            description: "Catch strange fish while evading horrors at sea.",
-            instructions: ["Step 1", "Step 2"],
-            localizedStringResource: "NEW GAME"
-        ),
-        Scenario(
-            id: UUID(),
-            title: "Warp Your Reality in Control",
-            thumbnail: "mocks/scenario/chip_bg",
-            backgroundImage: "control_bg",
-            level: .medium,
-            description: "Unleash supernatural powers in this action-adventure thriller.",
-            instructions: ["Step 1", "Step 2"],
-            localizedStringResource: "PRE-ORDER"
-        ),
-        Scenario(
-            id: UUID(),
-            title: "Throw a gift hunt in Gardenscapes!",
-            thumbnail: "mocks/scenario/chip_bg",
-            backgroundImage: "gardenscapes_bg",
-            level: .hard,
-            description: "Surprise the spies and earn some winter rewards.",
-            instructions: ["Step 1", "Step 2"],
-            localizedStringResource: "LIMITED TIME"
-        )
-    ]
-}
-
 struct ScenariosView: View {
-    private let scenarios = Scenario.scenarios
+    @State private var isScenarioTapped: Bool = false
+    @State private var selectedScenario: Scenario?
     
-    var body: some View {
-        VStack(
-            alignment: .leading,
-            spacing: 10
-        ) {
-            GeometryReader { geometry in
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHGrid(rows: [GridItem(.flexible())], spacing: 16) {
-                        ForEach(scenarios) { scenario in
-                            ScenarioCardView(scenario: scenario)
-                        }
+    private let scenarios = Scenario.scenarios
+    private let quickLinks = QuickLinkItem.links
+    private let options = [
+        [
+            ScenarioSmallRectItem.options[0],
+            ScenarioSmallRectItem.options[1]
+        ],
+        [
+            ScenarioSmallRectItem.options[2],
+            ScenarioSmallRectItem.options[3]
+        ]
+    ]
+    
+    @ViewBuilder
+    private func MainGridView() -> some View {
+        VStack {
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHGrid(rows: [GridItem(.flexible())], spacing: 10) {
+                    ForEach(scenarios) { scenario in
+                        ScenarioCardView(scenario: scenario)
+                            .onTapGesture {
+                                isScenarioTapped = true
+                                selectedScenario = scenario
+                            }
                     }
-                    .padding(.horizontal)
                 }
-                .frame(height: geometry.size.height, alignment: .top)
+                .padding(.horizontal)
+                
+                Spacer()
             }
             .frame(minHeight: 250, alignment: .top)
         }
-        Spacer()
+        .alert(
+            selectedScenario?.title ?? "Scenario",
+            isPresented: $isScenarioTapped) {
+                // Start
+                Button("Start") {
+                    // start scenario
+                }
+                Button("Cancel") {}
+            }
+    }
+    
+    @ViewBuilder
+    private func QuickLinksView() -> some View {
+        VStack(alignment: .leading) {
+            Text("Quick Links")
+                .font(.headline)
+            
+            ForEach(quickLinks) { quickLink in
+                SingleLineButton(
+                    title: quickLink.title
+                )
+            }
+        }
+        .padding(.horizontal)
+    }
+    
+    @ViewBuilder
+    private func SmallCardsGridView() -> some View {
+        VStack(alignment: .leading) {
+            Text("More Features")
+                .font(.headline)
+            
+            HStack {
+                VStack {
+                    ScenarioSmallRectView(item: ScenarioSmallRectItem.options[0])
+                    ScenarioSmallRectView(item: ScenarioSmallRectItem.options[1])
+                }
+                
+                VStack {
+                    ScenarioSmallRectView(item: ScenarioSmallRectItem.options[2])
+                    ScenarioSmallRectView(item: ScenarioSmallRectItem.options[3])
+                }
+                
+                VStack {
+                    ScenarioSmallRectView(item: ScenarioSmallRectItem.options[4])
+                    Spacer()
+                }
+                
+                Spacer()
+            }
+//
+//            TabView {
+////                ForEach(0..<options.count, id: \.self) { index in
+//////                    VStack {
+//////                        ForEach(options[index], id: \.id) { subitem in
+//////                            ScenarioSmallRectView(item: subitem)
+//////                        }
+//////                    }
+//////                    .padding(.horizontal)
+////                    ScenarioSmallRectView(item: ScenarioSmallRectItem.options[0])
+////                    ScenarioSmallRectView(item: ScenarioSmallRectItem.options[1])
+////                }
+//                ScenarioSmallRectView(item: ScenarioSmallRectItem.options[0])
+//                ScenarioSmallRectView(item: ScenarioSmallRectItem.options[1])
+//            }
+//            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+        }
+        .padding(.horizontal)
+    }
+    
+    var body: some View {
+        ScrollView {
+            VStack(
+                alignment: .leading,
+                spacing: 10
+            ) {
+                MainGridView()
+                Divider()
+                    .padding(.horizontal)
+                SmallCardsGridView()
+                Divider()
+                    .padding(.horizontal)
+                QuickLinksView()
+                Spacer()
+                    .frame(minHeight: 50)
+            }
+        }
     }
 }
 
 #Preview(body: {
-    ScenariosView()
-        .frame(minHeight: 700)
-        .background(.gray)
+    NavigationStack {
+        ScenariosView()
+            .navigationTitle("Scenarios")
+    }
 })
 

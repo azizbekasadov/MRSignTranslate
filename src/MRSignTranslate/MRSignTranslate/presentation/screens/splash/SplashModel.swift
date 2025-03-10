@@ -15,7 +15,7 @@ enum SplashIntent {
 
 @MainActor
 final class SplashViewModel: ObservableObject {
-
+    @Inject private var settingsConfigurator: SettingsConfigurationManager
     @Inject private var router: MainRouter
     @Inject private var storageManager: DataStorageManager
     
@@ -30,28 +30,28 @@ final class SplashViewModel: ObservableObject {
         }
     }
     
-    init() {
-        
-    }
+    init() {}
     
     private func handleCheckLoginState() {
-        Task {
+        settingsConfigurator.hasShownWelcomeMessage = true
+        
+        Task { @MainActor in
             do {
                 let loginState = try await userUseCases.checkLoginState()
                 
                 switch loginState {
                 case .loggedIn, .superUser:
                     await MainActor.run {
-                        router.pushDestination(.home)
+                        router.setRoot(.home)
                     }
                 case .loggedOut, .demoUser:
                     logger.info("Setting Store ModelContanier")
                     storageManager.switchToStoreContainer()
-                    router.pushDestination(.login)
+                    router.pushDestination(.home)
                 }
             }
             catch {
-                router.pushDestination(.login)
+                router.pushDestination(.home)
             }
         }
     }

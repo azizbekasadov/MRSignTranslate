@@ -63,16 +63,17 @@ struct UserFooterView: View {
                     .font(.system(size: 15, weight: .bold))
                     .foregroundStyle(Color.gray)
             }
-            
+            .buttonStyle(.plain)
         } label: {
             HStack {
                 Text("\(viewModel.state.userName ?? "")")
                     .font(.system(size: 18, weight: .bold))
-                    .foregroundStyle(Color.black)
+                    .foregroundStyle(.primary)
+                    .lineLimit(1)
                 Image(systemName: "chevron.down")
                     .renderingMode(.template)
                     .imageScale(.small)
-                    .foregroundStyle(Color.black)
+                    .foregroundStyle(.primary)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -85,7 +86,7 @@ struct UserFooterView: View {
         let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "-"
         let buildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "-"
         
-        Text("\(deviceOsVersion) / \(appVersion) \(buildNumber)")
+        Text("OS Version: \(deviceOsVersion) / \(appVersion) \(buildNumber)")
             .font(.system(size: 15, weight: .light))
             .frame(maxWidth: .infinity, alignment: .leading)
     }

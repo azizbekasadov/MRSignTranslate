@@ -15,8 +15,8 @@ struct ScenarioCardView: View {
             Image(scenario.thumbnail)
                 .resizable()
                 .scaledToFill()
-                .frame(width: 280, height: 200)
-                .cornerRadius(3, corners: .allCorners)
+                .frame(width: 300, height: 200)
+                .cornerRadius(6, corners: .allCorners)
                 .clipped()
             
             Text(scenario.level.rawValue.uppercased())
@@ -37,9 +37,11 @@ struct ScenarioCardView: View {
                 .lineLimit(nil)
                 .foregroundColor(.secondary)
                 .layoutPriority(0)
-            
+            Spacer()
         }
         .frame(width: 300, alignment: .top)
+        .background(Color.white.opacity(0.001))
+        .hoverEffect(.lift)
     }
 }
 

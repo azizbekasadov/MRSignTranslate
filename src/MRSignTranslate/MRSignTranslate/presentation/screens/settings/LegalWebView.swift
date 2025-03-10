@@ -85,6 +85,6 @@ struct LegalWebView: View {
 
 #Preview {
     LegalWebView(
-        destination: .privacy
+        destination: .terms
     )
 }

@@ -10,6 +10,7 @@ import SwiftUI
 import SwiftData
 
 struct SplashScreen: View {
+    
     @StateObject private var viewModel: SplashViewModel = .init()
 
     var body: some View {
@@ -31,6 +32,7 @@ struct SplashScreen: View {
                 ProgressView()
             } else {
                 Button {
+                    print("Tapped")
                     viewModel.dispatch(.checkLoginState)
                 } label: {}
                 .buttonStyle(

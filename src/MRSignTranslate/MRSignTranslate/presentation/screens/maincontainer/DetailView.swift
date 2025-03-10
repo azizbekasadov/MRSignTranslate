@@ -20,7 +20,10 @@ struct DetailView: View {
             case .scenarios:
                 ScenariosView()
             case .settings:
-                SettingsScreen()
+                NavigationStack {
+                    SettingsScreen()
+                }
+                .navigationBarBackButtonHidden(false)
             case .history:
                 HistoryView()
             case .none:
