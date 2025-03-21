@@ -18,7 +18,6 @@ let package = Package(
         )
     ],
     dependencies: [
-//        .package(url: "https://github.com/apple/swift-testing", from: "6.0.0"),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.6.2")
     ],
     targets: [
@@ -31,8 +30,7 @@ let package = Package(
         .testTarget(
             name: "MRSignMTArchitectureTests",
             dependencies: [
-                .target(name: "MRSignMTArchitecture")//,
-//                .product(name: "Testing", package: "swift-testing")
+                .target(name: "MRSignMTArchitecture")
             ],
             swiftSettings: [.unsafeFlags(["-Xfrontend", "-enable-testing"])]
         )

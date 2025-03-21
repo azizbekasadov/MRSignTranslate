@@ -57,8 +57,8 @@ struct MainSplitView: View {
             Spacer()
             
             UserFooterView()
-                .padding(.horizontal, 6)
-                .padding(.bottom, 16)
+                .padding(.horizontal, 10)
+                .padding(.bottom, 24)
         }
     }
     

@@ -10,7 +10,9 @@ import SwiftUI
 enum SettingsDestinationFactory {
     
     @ViewBuilder
-    static func viewForDemoDestination(_ destination: SettingsDestination) -> some View {
+    static func viewForDemoDestination(
+        _ destination: SettingsDestination
+    ) -> some View {
         switch destination {
         case .general(let option):
             switch option {

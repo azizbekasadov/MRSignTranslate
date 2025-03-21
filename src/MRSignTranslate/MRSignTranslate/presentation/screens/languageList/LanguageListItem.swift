@@ -7,53 +7,11 @@
 
 import Foundation
 import SwiftUI
-
-protocol LanguageListable {
-    var iconName: String { get }
-    var title: String { get }
-    var description: String { get }
-}
-
-struct Language: Identifiable, LanguageListable {
-    let id = UUID()
-    let iconName: String
-    let title: String
-    let description: String
-}
+import MRSignMTKit
 
 // MARK: - Language Data
 struct LanguageData {
-    static let allLanguages: [Language] = [
-        Language(iconName: "🇦🇷", title: "Español", description: "Argentina"),
-        Language(iconName: "🇦🇹", title: "Deutsch", description: "Österreich"),
-        Language(iconName: "🇧🇪", title: "Nederlands", description: "België"),
-        Language(iconName: "🇧🇬", title: "Български", description: "България"),
-        Language(iconName: "🇧🇷", title: "Português", description: "Brasil"),
-        Language(iconName: "🇨🇳", title: "中文", description: "中国"),
-        Language(iconName: "🇨🇿", title: "Čeština", description: "Česká republika"),
-        Language(iconName: "🇩🇪", title: "Deutsch", description: "Deutschland"),
-        Language(iconName: "🇩🇰", title: "Dansk", description: "Danmark"),
-        Language(iconName: "🇪🇪", title: "Eesti", description: "Eesti"),
-        Language(iconName: "🇪🇸", title: "Español", description: "España"),
-        Language(iconName: "🇫🇮", title: "Suomi", description: "Suomi"),
-        Language(iconName: "🇫🇷", title: "Français", description: "France"),
-        Language(iconName: "🇬🇧", title: "English", description: "United Kingdom"),
-        Language(iconName: "🇬🇷", title: "Ελληνικά", description: "Ελλάδα"),
-        Language(iconName: "🇮🇳", title: "हिन्दी", description: "भारत"),
-        Language(iconName: "🇮🇱", title: "עברית", description: "ישראל"),
-        Language(iconName: "🇮🇹", title: "Italiano", description: "Italia"),
-        Language(iconName: "🇯🇵", title: "日本語", description: "日本"),
-        Language(iconName: "🇱🇻", title: "Latviešu", description: "Latvija"),
-        Language(iconName: "🇱🇹", title: "Lietuvių", description: "Lietuva"),
-        Language(iconName: "🇳🇱", title: "Nederlands", description: "Nederland"),
-        Language(iconName: "🇵🇱", title: "Polski", description: "Polska"),
-        Language(iconName: "🇵🇹", title: "Português", description: "Portugal"),
-        Language(iconName: "🇷🇺", title: "Русский", description: "Россия"),
-        Language(iconName: "🇸🇪", title: "Svenska", description: "Sverige"),
-        Language(iconName: "🇹🇷", title: "Türkçe", description: "Türkiye"),
-        Language(iconName: "🇺🇦", title: "Українська", description: "Україна"),
-        Language(iconName: "🇺🇸", title: "English", description: "United States")
-    ].sorted { $0.title < $1.title } // Sort alphabetically by title
+    static let allLanguages: [MRLanguage] = MRLanguage.allLanguages
 }
 
 extension LocaleCountry: LanguageListable {

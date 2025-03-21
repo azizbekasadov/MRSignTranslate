@@ -13,14 +13,13 @@ public protocol NavigationStackDestination: Equatable, Hashable, Codable {//, Cu
 }
 
 extension NavigationStackDestination {
-    public var description: String {
+    public var commonString: String {
        String(describing: self).components(separatedBy: "(").first ?? ""
     }
 }
 
-@Observable
-public class NavigationStackRouter<T: NavigationStackDestination> {
-    public var path = [T]()
+public class NavigationStackRouter<T: NavigationStackDestination>: ObservableObject {
+    @Published public var path = [T]()
 
     public init() {}
     
@@ -58,10 +57,10 @@ public class NavigationStackRouter<T: NavigationStackDestination> {
     }
 
     public func goBack(to destination: T) {
-        logger.info(.init(stringLiteral: destination.description))
+        logger.info(.init(stringLiteral: destination.commonString))
         
         guard let index = path.firstIndex(of: destination) else {
-            let log = "\(self) did no find \(destination.description) in the view stack"
+            let log = "\(self) did no find \(destination.commonString) in the view stack"
             logger.warning("\(log)")
             logPath(path)
 //            assertionFailure(log)
@@ -71,7 +70,7 @@ public class NavigationStackRouter<T: NavigationStackDestination> {
     }
 
     private func logPath(_ path: [T]) {
-        let path = "\(path.map { $0.description }.joined(separator: ","))"
+        let path = "\(path.map { $0.commonString }.joined(separator: ","))"
         
         logger.info("\(self )count: \(path.count), path: \(path)")
     }

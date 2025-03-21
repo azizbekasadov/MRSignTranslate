@@ -34,6 +34,7 @@ struct SplashScreen: View {
                 Button {
                     print("Tapped")
                     viewModel.dispatch(.checkLoginState)
+                    
                 } label: {}
                 .buttonStyle(
                     GlassButtonStyle(

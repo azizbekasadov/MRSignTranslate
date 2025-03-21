@@ -15,13 +15,19 @@ struct SingleLineButton: View {
         Button(action: {
             isPresented = true
         }) {
-            Text(title)
-                .font(.system(size: 16, weight: .regular))
-                .foregroundStyle(.primary)
+            HStack(alignment: .top) {
+                Text(title)
+                    .font(.system(size: 16, weight: .regular))
+                    .foregroundStyle(.primary)
+                    .padding(6)
+                Spacer()
+                    .frame(maxWidth: 250)
+            }
         }
         .sheet(isPresented: self.$isPresented) {
             DefaultView(title: title)
         }
+        .buttonBorderShape(.roundedRectangle)
         .buttonStyle(.plain)
     }
 }

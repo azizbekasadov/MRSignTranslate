@@ -1,3 +1,5 @@
 # RealityKitContent
 
-A description of this package.
+Hereby we use RealiKit Components and Entities to generate scenarios in the app
+
+

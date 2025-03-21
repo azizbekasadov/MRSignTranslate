@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Collections
 
 struct ScenarioSessionRecord: Identifiable {
     let id: UUID

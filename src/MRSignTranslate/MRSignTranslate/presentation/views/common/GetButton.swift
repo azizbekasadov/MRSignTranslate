@@ -51,6 +51,7 @@ struct GetButton: View {
         .background(Constants.Colors.backgroundColor)
         .clipShape(Capsule())
         .buttonStyle(.plain)
+        .glassBackgroundEffect()
         .hoverEffect(.lift)
     }
 }

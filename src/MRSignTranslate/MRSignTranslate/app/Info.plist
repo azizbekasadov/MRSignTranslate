@@ -20,10 +20,10 @@
 		</dict>
 	</dict>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>For speech recognition</string>
+	<string>$(PRODUCT_NAME) needs access to your microphone for speech recognition</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Speech recognition will be used to transcribe audio for translation</string>
+	<string>$(PRODUCT_NAME) needs access to speech recognition will be used to transcribe audio for translation</string>
 	<key>NSCameraUsageDescription</key>
-	<string>For sign language recognition</string>
+	<string>$(PRODUCT_NAME) needs access to your camera for sign language recognition</string>
 </dict>
 </plist>

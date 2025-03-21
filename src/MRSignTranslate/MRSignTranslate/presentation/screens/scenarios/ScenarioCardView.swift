@@ -41,6 +41,8 @@ struct ScenarioCardView: View {
         }
         .frame(width: 300, alignment: .top)
         .background(Color.white.opacity(0.001))
+        .padding(10)
+        .cornerRadius(6, corners: .allCorners)
         .hoverEffect(.lift)
     }
 }

@@ -16,14 +16,11 @@ struct DetailView: View {
         Group {
             switch selectedSection {
             case .home:
-                HomeView()
+                EmptyView()
             case .scenarios:
                 ScenariosView()
             case .settings:
-                NavigationStack {
-                    SettingsScreen()
-                }
-                .navigationBarBackButtonHidden(false)
+                SettingsScreen()
             case .history:
                 HistoryView()
             case .none:

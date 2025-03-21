@@ -9,6 +9,9 @@ import SwiftUI
 import MRSignMTArchitecture
 
 struct ScenariosView: View {
+    @Environment(\.openImmersiveSpace) private var openImmersiveSpace
+    @Environment(\.openWindow) private var openWindow
+    
     @State private var isScenarioTapped: Bool = false
     @State private var selectedScenario: Scenario?
     
@@ -29,7 +32,7 @@ struct ScenariosView: View {
     private func MainGridView() -> some View {
         VStack {
             ScrollView(.horizontal, showsIndicators: false) {
-                LazyHGrid(rows: [GridItem(.flexible())], spacing: 10) {
+                LazyHGrid(rows: [GridItem(.flexible())], spacing: 5) {
                     ForEach(scenarios) { scenario in
                         ScenarioCardView(scenario: scenario)
                             .onTapGesture {
@@ -38,10 +41,10 @@ struct ScenariosView: View {
                             }
                     }
                 }
-                .padding(.horizontal)
                 
                 Spacer()
             }
+            .padding(6)
             .frame(minHeight: 250, alignment: .top)
         }
         .alert(
@@ -66,52 +69,42 @@ struct ScenariosView: View {
                     title: quickLink.title
                 )
             }
+            .padding(.leading, -6)
         }
         .padding(.horizontal)
     }
     
     @ViewBuilder
     private func SmallCardsGridView() -> some View {
-        VStack(alignment: .leading) {
-            Text("More Features")
-                .font(.headline)
-            
-            HStack {
-                VStack {
-                    ScenarioSmallRectView(item: ScenarioSmallRectItem.options[0])
-                    ScenarioSmallRectView(item: ScenarioSmallRectItem.options[1])
-                }
+        ScrollView(.horizontal) {
+            VStack(alignment: .leading) {
+                Text("More Features")
+                    .font(.headline)
                 
-                VStack {
-                    ScenarioSmallRectView(item: ScenarioSmallRectItem.options[2])
-                    ScenarioSmallRectView(item: ScenarioSmallRectItem.options[3])
-                }
-                
-                VStack {
-                    ScenarioSmallRectView(item: ScenarioSmallRectItem.options[4])
+                HStack(alignment: .top) {
+                    VStack {
+                        ScenarioSmallRectView(item: ScenarioSmallRectItem.options[0])
+                        ScenarioSmallRectView(item: ScenarioSmallRectItem.options[1])
+                    }
+                    
+                    VStack {
+                        ScenarioSmallRectView(item: ScenarioSmallRectItem.options[2])
+                        ScenarioSmallRectView(item: ScenarioSmallRectItem.options[3])
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        ScenarioSmallRectView(item: ScenarioSmallRectItem.options[4])
+                        ScenarioSmallRectView(item: ScenarioSmallRectItem.options[4])
+                            .opacity(0)
+                            .disabled(true)
+                    }
+                    
                     Spacer()
                 }
-                
-                Spacer()
             }
-//
-//            TabView {
-////                ForEach(0..<options.count, id: \.self) { index in
-//////                    VStack {
-//////                        ForEach(options[index], id: \.id) { subitem in
-//////                            ScenarioSmallRectView(item: subitem)
-//////                        }
-//////                    }
-//////                    .padding(.horizontal)
-////                    ScenarioSmallRectView(item: ScenarioSmallRectItem.options[0])
-////                    ScenarioSmallRectView(item: ScenarioSmallRectItem.options[1])
-////                }
-//                ScenarioSmallRectView(item: ScenarioSmallRectItem.options[0])
-//                ScenarioSmallRectView(item: ScenarioSmallRectItem.options[1])
-//            }
-//            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+            .padding(.horizontal)
         }
-        .padding(.horizontal)
+        .scrollBounceBehavior(.basedOnSize)
     }
     
     var body: some View {
@@ -130,6 +123,7 @@ struct ScenariosView: View {
                 Spacer()
                     .frame(minHeight: 50)
             }
+            .padding(.horizontal, 6)
         }
     }
 }

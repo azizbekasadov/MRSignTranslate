@@ -6,16 +6,17 @@
 //
 
 import SwiftUI
+import Observation
 import MRSignMTArchitecture
 
 struct SettingsScreen: View {
     @Environment(\.openURL) private var openURL
-    @Inject private var router: SettingsRouter
     
+    @State private var selectedSection: SettingsDestination?
     @StateObject private var viewModel: SettingsModel = .init()
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: viewModel.$router.path) {
             List {
                 Section("General") {
                     settingsRow("Language", destination: .general(.language))
@@ -57,17 +58,16 @@ struct SettingsScreen: View {
                 .onTapGesture {
                     viewModel.handleSupport()
             }
+            .id(destination.commonString)
         } else {
             NavigationLink(value: destination) {
                 Text(title)
             }
-            .id(destination.hashValue)
+            .id(destination.commonString)
         }
     }
 }
 
 #Preview {
-    NavigationStack {
-        SettingsScreen()
-    }
+    SettingsScreen()
 }

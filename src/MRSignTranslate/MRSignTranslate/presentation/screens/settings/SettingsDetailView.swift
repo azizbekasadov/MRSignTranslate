@@ -95,9 +95,3 @@ struct SettingsDetailView: View {
         .navigationTitle(viewModel.item.title)
     }
 }
-
-#Preview {
-    NavigationStack {
-        SettingsScreen()
-    }
-}
