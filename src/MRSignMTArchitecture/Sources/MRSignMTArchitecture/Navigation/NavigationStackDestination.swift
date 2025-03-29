@@ -7,6 +7,7 @@
 
 import Foundation
 import Observation
+import SwiftUI
 
 public protocol NavigationStackDestination: Equatable, Hashable, Codable {//, CustomStringConvertible {
     typealias Router = NavigationStackRouter<Self>
@@ -18,8 +19,13 @@ extension NavigationStackDestination {
     }
 }
 
+public protocol WindowType {
+    func getProviderID() -> String
+}
+
 public class NavigationStackRouter<T: NavigationStackDestination>: ObservableObject {
     @Published public var path = [T]()
+    @Environment(\.openWindow) public var openWindow
 
     public init() {}
     
@@ -29,6 +35,10 @@ public class NavigationStackRouter<T: NavigationStackDestination>: ObservableObj
         pushDestination(destination)
     }
 
+    public func open(_ windowType: WindowType) {
+        openWindow.callAsFunction(id: windowType.getProviderID())
+    }
+    
     public func popToRoot() {
         logger.info("\(self) will pop to root")
         

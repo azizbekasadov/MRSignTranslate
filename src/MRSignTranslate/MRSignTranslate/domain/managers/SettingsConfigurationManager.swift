@@ -45,4 +45,6 @@ final class SettingsConfigurationManager: SettingsConfigurationManagerProtocol {
             defaults.set(newValue, forKey: Keys.welcomeMessage)
         }
     }
+    
+    static let shared: SettingsConfigurationManager = .init()
 }

@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		5D72CB372D6B924C000F55AA /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 5D72CB362D6B924C000F55AA /* RealityKitContent */; };
 		5D72CB922D6B9D32000F55AA /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D72CB912D6B9D32000F55AA /* ARKit.framework */; };
+		5D98438E2D91E2AD0056211B /* MRSignMTKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5DAE997D2D8798FF003C5696 /* MRSignMTKit */; };
 		5DAE997C2D8798FF003C5696 /* MRSignMTArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 5DAE997B2D8798FF003C5696 /* MRSignMTArchitecture */; };
-		5DAE997E2D8798FF003C5696 /* MRSignMTKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5DAE997D2D8798FF003C5696 /* MRSignMTKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,12 +24,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5D04D8CE2D91E1B600E8F268 /* MRSignMTKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MRSignMTKit; path = ../MRSignMTKit; sourceTree = SOURCE_ROOT; };
 		5D72CB312D6B924C000F55AA /* MRSignTranslate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MRSignTranslate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D72CB352D6B924C000F55AA /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 		5D72CB4C2D6B924D000F55AA /* MRSignTranslateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MRSignTranslateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D72CB912D6B9D32000F55AA /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
 		5D72CB952D6BA50A000F55AA /* MRSignMTArchitecture */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MRSignMTArchitecture; path = ../MRSignMTArchitecture; sourceTree = SOURCE_ROOT; };
-		5DD12F7A2D7E551B001811CD /* MRSignMTKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MRSignMTKit; path = ../MRSignMTKit; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -63,7 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DAE997E2D8798FF003C5696 /* MRSignMTKit in Frameworks */,
+				5D98438E2D91E2AD0056211B /* MRSignMTKit in Frameworks */,
 				5D72CB922D6B9D32000F55AA /* ARKit.framework in Frameworks */,
 				5D72CB372D6B924C000F55AA /* RealityKitContent in Frameworks */,
 				5DAE997C2D8798FF003C5696 /* MRSignMTArchitecture in Frameworks */,
@@ -83,7 +83,7 @@
 		5D72CB282D6B924C000F55AA = {
 			isa = PBXGroup;
 			children = (
-				5DD12F7A2D7E551B001811CD /* MRSignMTKit */,
+				5D04D8CE2D91E1B600E8F268 /* MRSignMTKit */,
 				5D72CB952D6BA50A000F55AA /* MRSignMTArchitecture */,
 				5D72CB332D6B924C000F55AA /* MRSignTranslate */,
 				5D72CB342D6B924C000F55AA /* Packages */,
@@ -267,6 +267,9 @@
 				INFOPLIST_FILE = "$(TARGET_NAME)/app/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = SRay;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSCameraUsageDescription = "MRSignTranslate needs access to your camera for sign language recognition";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "MRSignTranslate needs access to your microphone for speech recognition";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "MRSignTranslate needs access to speech recognition will be used to transcribe audio for translation";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -300,6 +303,9 @@
 				INFOPLIST_FILE = "$(TARGET_NAME)/app/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = SRay;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSCameraUsageDescription = "MRSignTranslate needs access to your camera for sign language recognition";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "MRSignTranslate needs access to your microphone for speech recognition";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "MRSignTranslate needs access to speech recognition will be used to transcribe audio for translation";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (

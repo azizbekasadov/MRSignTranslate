@@ -8,13 +8,14 @@
 import Foundation
 
 struct Scenario: Identifiable, CustomLocalizedStringResourceConvertible {
-    let id: UUID
+    let id: String
     let title: String
     let thumbnail: String
     let backgroundImage: String
     let level: Level
     let description: String
     let instructions: [Instruction]
+    let scenarioWindowId: String
     
     let localizedStringResource: LocalizedStringResource
 }

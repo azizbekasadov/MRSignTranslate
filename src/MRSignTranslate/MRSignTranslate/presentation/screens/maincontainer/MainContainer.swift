@@ -15,6 +15,7 @@ struct MainSplitView: View {
     
     private let sections: [SidebarSection] = [
         .scenarios,
+        .history,
         .settings
     ].sorted(
         by: { $0.order < $1.order }

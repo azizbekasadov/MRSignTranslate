@@ -7,33 +7,76 @@
 
 import SwiftUI
 import MRSignMTArchitecture
+import MRSignMTKit
+
+protocol ScenarioSmallViewFactory {
+    func makeView(for item: ScenarioSmallRectItem) -> AnyView
+}
+
+struct DefaultScenarioViewFactory: ScenarioSmallViewFactory {
+    func makeView(for item: ScenarioSmallRectItem) -> AnyView {
+        switch item.type {
+        case .translator:
+            return MRWebViewFactory
+                .signMT()
+                .anyView
+        case .dictionary:
+            return EmptyView().anyView
+        case .instructions:
+            return EmptyView().anyView
+        case .statistics:
+            return EmptyView().anyView
+        case .feedback:
+            return EmptyView().anyView
+        }
+    }
+}
+
+@Observable
+final class ScenariosViewModel {
+    @ObservationIgnored
+    private(set) var factory = DefaultScenarioViewFactory()
+    
+    private(set) var quickLinks:[QuickLinkItem] = []
+    private(set) var options:[[ScenarioSmallRectItem]] = []
+    private(set) var scenarios:[Scenario] = []
+    
+    @ObservationIgnored
+    private let dataProvider: (any ScenarioDataProviderProtocol)
+    
+    init(dataProvider: any ScenarioDataProviderProtocol) {
+        self.dataProvider = dataProvider
+    }
+    
+    func fetchData() async {
+        Task {
+            scenarios = dataProvider.retrieveScenarios()
+            options = dataProvider.retrieveSmallCardItems()
+            quickLinks = dataProvider.retrievewQuickLinks()
+        }
+    }
+}
 
 struct ScenariosView: View {
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @Environment(\.openWindow) private var openWindow
     
     @State private var isScenarioTapped: Bool = false
+    @State private var isScenarioLaunched: Bool = false
     @State private var selectedScenario: Scenario?
+    @State private var selectedSmallScenarioType: ScenarioSmallRectItem? = nil
+    @State private var showSheet: Bool = false
     
-    private let scenarios = Scenario.scenarios
-    private let quickLinks = QuickLinkItem.links
-    private let options = [
-        [
-            ScenarioSmallRectItem.options[0],
-            ScenarioSmallRectItem.options[1]
-        ],
-        [
-            ScenarioSmallRectItem.options[2],
-            ScenarioSmallRectItem.options[3]
-        ]
-    ]
+    private let viewModel = ScenariosViewModel(
+        dataProvider: ScenariosDataProvider()
+    )
     
     @ViewBuilder
     private func MainGridView() -> some View {
         VStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHGrid(rows: [GridItem(.flexible())], spacing: 5) {
-                    ForEach(scenarios) { scenario in
+                    ForEach(viewModel.scenarios) { scenario in
                         ScenarioCardView(scenario: scenario)
                             .onTapGesture {
                                 isScenarioTapped = true
@@ -52,10 +95,18 @@ struct ScenariosView: View {
             isPresented: $isScenarioTapped) {
                 // Start
                 Button("Start") {
-                    // start scenario
+                    openScenario()
                 }
                 Button("Cancel") {}
             }
+    }
+    
+    private func openScenario() {
+        if let scenario = self.selectedScenario {
+            openWindow.callAsFunction(
+                id: scenario.scenarioWindowId
+            )
+        }
     }
     
     @ViewBuilder
@@ -64,7 +115,7 @@ struct ScenariosView: View {
             Text("Quick Links")
                 .font(.headline)
             
-            ForEach(quickLinks) { quickLink in
+            ForEach(viewModel.quickLinks) { quickLink in
                 SingleLineButton(
                     title: quickLink.title
                 )
@@ -76,35 +127,54 @@ struct ScenariosView: View {
     
     @ViewBuilder
     private func SmallCardsGridView() -> some View {
+        let columns = ScenarioSmallRectItem.options.chunked(into: 2)
+
         ScrollView(.horizontal) {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 12) {
                 Text("More Features")
                     .font(.headline)
-                
-                HStack(alignment: .top) {
-                    VStack {
-                        ScenarioSmallRectView(item: ScenarioSmallRectItem.options[0])
-                        ScenarioSmallRectView(item: ScenarioSmallRectItem.options[1])
+
+                HStack(alignment: .top, spacing: 16) {
+                    ForEach(Array(columns.enumerated()), id: \.offset) {
+                        index,
+                        columnItems in
+                        VStack(spacing: 12) {
+                            ForEach(columnItems.indices, id: \.self) { innerIndex in
+                                ScenarioSmallRectView(
+                                    item: columnItems[innerIndex]
+                                ) {
+                                    let selected = columnItems[innerIndex]
+                                    if selected.type == .translator {
+                                        openWindow.callAsFunction(
+                                            id: MRSignTranslateApp.WindowGroupIdentifiers.translator
+                                        )
+                                    } else {
+                                        selectedSmallScenarioType = selected
+                                    }
+                                }
+                            }
+                            if columnItems.count == 1 {
+                                ScenarioSmallRectView(item: columnItems[0])
+                                {
+                                    selectedSmallScenarioType = columnItems[0]
+                                }
+                                    .opacity(0)
+                                    .disabled(true)
+                            }
+                        }
                     }
-                    
-                    VStack {
-                        ScenarioSmallRectView(item: ScenarioSmallRectItem.options[2])
-                        ScenarioSmallRectView(item: ScenarioSmallRectItem.options[3])
-                    }
-                    
-                    VStack(alignment: .leading) {
-                        ScenarioSmallRectView(item: ScenarioSmallRectItem.options[4])
-                        ScenarioSmallRectView(item: ScenarioSmallRectItem.options[4])
-                            .opacity(0)
-                            .disabled(true)
-                    }
-                    
+
                     Spacer()
                 }
             }
             .padding(.horizontal)
         }
         .scrollBounceBehavior(.basedOnSize)
+        .sheet(isPresented: $showSheet) {
+            if let type = selectedSmallScenarioType {
+                viewModel.factory.makeView(for: type)
+            }
+        }
     }
     
     var body: some View {
@@ -116,7 +186,7 @@ struct ScenariosView: View {
                 MainGridView()
                 Divider()
                     .padding(.horizontal)
-                SmallCardsGridView()
+//                SmallCardsGridView()
                 Divider()
                     .padding(.horizontal)
                 QuickLinksView()
@@ -124,6 +194,9 @@ struct ScenariosView: View {
                     .frame(minHeight: 50)
             }
             .padding(.horizontal, 6)
+        }
+        .task {
+            await viewModel.fetchData()
         }
     }
 }

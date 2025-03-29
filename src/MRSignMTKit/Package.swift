@@ -7,8 +7,6 @@ let package = Package(
     name: "MRSignMTKit",
     platforms: [
         .iOS(.v17),
-        .macOS(.v11),
-        .watchOS(.v6),
         .visionOS("2.0")
     ],
     products: [
@@ -17,9 +15,9 @@ let package = Package(
             targets: ["MRSignMTKit"]),
     ],
     dependencies: [
-        .package(path: "../src/MRSignMTArchitecture"),
-        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "11.10.0"),
-        .package(url: "https://github.com/tensorflow/tensorflow.git", from: "2.19.0")
+        .package(path: "../src/MRSignMTArchitecture")//,
+//        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "11.10.0"),
+//        .package(url: "https://github.com/tensorflow/tensorflow.git", from: "2.19.0")
     ],
     targets: [
         .target(

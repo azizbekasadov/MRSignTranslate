@@ -22,7 +22,7 @@ struct DetailView: View {
             case .settings:
                 SettingsScreen()
             case .history:
-                HistoryView()
+                HistoryScreenFactory(repositoryType: .mock).make()
             case .none:
                 Text("Select a Section").font(.largeTitle)
             }

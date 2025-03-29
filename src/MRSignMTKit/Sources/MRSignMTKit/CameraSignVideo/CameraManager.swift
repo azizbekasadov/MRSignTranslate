@@ -73,7 +73,7 @@ public class CameraManager: CameraManagerProtocol {
                 let cameraEntity = PerspectiveCamera()
                 content.add(cameraEntity)
             }
-            .frame(width: 500, height: 500)
+            .frame(width: 800, height: 800)
         }
     }
     

@@ -142,7 +142,7 @@ class SpeechRecognitionFactory {
         #if targetEnvironment(simulator)
         return SimulatedSpeechRecognition()
         #else
-        return RealSpeechRecognition(language: language)
+        return RealSpeechRecognitionManager(language: language)
         #endif
     }
 }

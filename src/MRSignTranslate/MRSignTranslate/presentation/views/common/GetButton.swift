@@ -48,10 +48,9 @@ struct GetButton: View {
                 .layoutPriority(0)
         }
         .font(Font.system(.caption).bold())
-        .background(Constants.Colors.backgroundColor)
+        .background(.regularMaterial)
         .clipShape(Capsule())
         .buttonStyle(.plain)
-        .glassBackgroundEffect()
         .hoverEffect(.lift)
     }
 }

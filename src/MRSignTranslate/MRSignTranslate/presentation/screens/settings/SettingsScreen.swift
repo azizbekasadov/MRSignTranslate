@@ -12,11 +12,11 @@ import MRSignMTArchitecture
 struct SettingsScreen: View {
     @Environment(\.openURL) private var openURL
     
-    @State private var selectedSection: SettingsDestination?
     @StateObject private var viewModel: SettingsModel = .init()
+//    @Inject @Bindable private var mainRouter: MainRouter
     
     var body: some View {
-        NavigationStack(path: viewModel.$router.path) {
+        NavigationStack {
             List {
                 Section("General") {
                     settingsRow("Language", destination: .general(.language))
@@ -62,8 +62,9 @@ struct SettingsScreen: View {
         } else {
             NavigationLink(value: destination) {
                 Text(title)
+                    .id(destination.commonString)
             }
-            .id(destination.commonString)
+            
         }
     }
 }

@@ -12,12 +12,12 @@ struct ScenarioCardView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Image(scenario.thumbnail)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 300, height: 200)
-                .cornerRadius(6, corners: .allCorners)
-                .clipped()
+//            Image(scenario.thumbnail)
+//                .resizable()
+//                .scaledToFill()
+//                .frame(width: 300, height: 200)
+//                .cornerRadius(6, corners: .allCorners)
+//                .clipped()
             
             Text(scenario.level.rawValue.uppercased())
                 .font(.caption)
