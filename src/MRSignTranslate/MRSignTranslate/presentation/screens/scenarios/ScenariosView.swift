@@ -158,8 +158,8 @@ struct ScenariosView: View {
                                 {
                                     selectedSmallScenarioType = columnItems[0]
                                 }
-                                    .opacity(0)
-                                    .disabled(true)
+                                .opacity(0)
+                                .disabled(true)
                             }
                         }
                     }
@@ -186,7 +186,7 @@ struct ScenariosView: View {
                 MainGridView()
                 Divider()
                     .padding(.horizontal)
-//                SmallCardsGridView()
+                SmallCardsGridView()
                 Divider()
                     .padding(.horizontal)
                 QuickLinksView()

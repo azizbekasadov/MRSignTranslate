@@ -30,7 +30,8 @@ final class MRWebViewViewModel {
 
 struct MRWebViewFactory: ViewFactory {
     private let type: MRWebView.SourceType
-    private let viewModel: MRWebViewViewModel
+    @Bindable private var viewModel: MRWebViewViewModel
+    @State private var zoomed: CGFloat = 1.0
     
     init(
         type: MRWebView.SourceType,
@@ -40,13 +41,19 @@ struct MRWebViewFactory: ViewFactory {
         self.viewModel = viewModel
     }
     
+    func zoomed(_ zoomed: CGFloat) -> Self {
+        self.zoomed = zoomed
+        return self
+    }
+    
     func make() -> AnyView {
         AnyView(
             NavigationStack(
                 root: {
                     MRWebView(
                         source: self.type,
-                        viewModel: self.viewModel
+                        viewModel: self.viewModel,
+                        zoomed: zoomed
                     )
             })
             .cornerRadius(32, corners: .allCorners)
@@ -56,12 +63,14 @@ struct MRWebViewFactory: ViewFactory {
 
 extension MRWebViewFactory {
     
+    
     @ViewBuilder
     static func signMT() -> some View {
         SignMTView()
     }
     
     struct SignMTView: View {
+        @StateObject private var speechViewModel = Speech2ToTextViewModel()
         @Environment(\.dismiss) private var dismiss
 
         var body: some View {
@@ -69,9 +78,9 @@ extension MRWebViewFactory {
                 MRWebViewFactory.init(
                     type: .remote(url: signMTURL.url!),
                     viewModel: .init(
-                        textToInject: "",
+                        textToInject: speechViewModel.transcript,
                         customJavaScript: SignMTInputText
-                            .textInjectMobile("")
+                            .textInjectMobile(speechViewModel.transcript)
                             .makeScript()
                     )
                 )
@@ -106,6 +115,7 @@ struct MRWebView: UIViewRepresentable {
 
     let source: SourceType
     let viewModel: MRWebViewViewModel
+    let zoomed: CGFloat
 
     func makeUIView(context: Context) -> WKWebView {
         let config = WKWebViewConfiguration()
@@ -113,8 +123,11 @@ struct MRWebView: UIViewRepresentable {
         config.defaultWebpagePreferences.allowsContentJavaScript = true
         
         let webView = WKWebView(frame: .zero, configuration: config)
-        webView.customUserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15"
-
+        webView.customUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+        webView.scrollView.minimumZoomScale = zoomed
+        webView.scrollView.maximumZoomScale = zoomed
+        webView.scrollView.zoomScale = zoomed
+        
         webView.navigationDelegate = context.coordinator
         loadContent(webView)
         return webView

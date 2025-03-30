@@ -12,13 +12,23 @@ import MRSignMTKit
 import Combine
 
 struct SpeechBubbleView: View {
-    @Bindable private var speechRecognizer = SpeechRecognitionManager.shared
+    @StateObject private var viewModel = Speech2ToTextViewModel()
     
     private var cancellables = Set<AnyCancellable>()
     
     var body: some View {
+        #if targetEnvironment(simulator)
+        VStack {
+            Spacer()
+            SpeechBubble(text: $viewModel.transcript)
+                .onAppear {
+                    viewModel.startRecording()
+                }
+                .padding(.bottom, 20)
+        }
+        #else
         RealityView { content in
-            let textEntity = createTextEntity(text: "")
+            let textEntity = createTextEntity(text: viewModel.transcript)
             let anchor = AnchorEntity(world: [0, 0, -1]) // Default position
             anchor.addChild(textEntity)
             content.add(anchor)
@@ -26,16 +36,15 @@ struct SpeechBubbleView: View {
             // Update text and position dynamically when someone speaks
             Task { @MainActor in
                 textEntity.model = ModelComponent(
-                    mesh: .generateText(speechRecognizer.recognizedText, extrusionDepth: 0.02, font: .systemFont(ofSize: 0.06)),
+                    mesh: .generateText(viewModel.transcript, extrusionDepth: 0.02, font: .systemFont(ofSize: 0.06)),
                     materials: [SimpleMaterial(color: .white, isMetallic: false)]
                 )
             }
         }
         .onAppear {
-            speechRecognizer.startRecognition(for: .usLocale) { captions in
-                debugPrint("captions:\(captions)")
-            }
+            viewModel.startRecording()
         }
+        #endif
     }
 
     private func createTextEntity(text: String) -> ModelEntity {
@@ -48,39 +57,41 @@ struct SpeechBubbleView: View {
 
 
 struct SpeechBubbleWithSignMTView: View {
+    @StateObject private var speechViewModel = Speech2ToTextViewModel()
+    
     @Bindable var viewModel = MRWebViewViewModel(
-        textToInject: "Hello!",
-        customJavaScript: SignMTInputText.textInjectMobile("Hello!").makeScript()
+        textToInject: "Start Speaking...",
+        customJavaScript: SignMTInputText.zoom(3).makeScript() //hideAllButSkeleton(input: "Hello!").makeScript()
     )
     
     var body: some View {
-        HStack(spacing: 0) {
+        viewModel.textToInject = speechViewModel.transcript
+        viewModel.customJavaScript = SignMTInputText.textInjectMobile(speechViewModel.transcript).makeScript()
+        
+        return HStack(spacing: 0) {
             MRWebViewFactory(
                 type: .remote(url: signMTURL.url!),
                 viewModel: viewModel
             )
+            .zoomed(4)
             .make()
             .frame(width: 500, height: 700)
-            .padding(.top, -55)
-            .padding(.bottom, -90)
+            .padding(.top, -60)
+            .padding(.bottom, -120)
             .background(Color(hex: "#202124"))
             .cornerRadius(32, corners: .allCorners)
             
             Spacer()
-                .frame(depth: 0.8)
-                .frame(width: 20)
-                
+                .frame(width: 200)
             
             SpeechBubble(
-                text: $viewModel.textToInject
+                text: $speechViewModel.transcript
             )
         }
         .onAppear {
-            withAnimation {
-                let newSpeechText = "Recognized speech: Hello, world!Recognized speech: Hello, world!Recognized speech: Hello, world!Recognized speech: Hello, world!Recognized speech: Hello, world!Recognized speech: Hello, world!Recognized speech: Hello, world!Recognized speech: Hello, world!"
-                
-                viewModel.textToInject = newSpeechText
-                viewModel.customJavaScript = SignMTInputText.textInjectMobile(newSpeechText).makeScript()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                speechViewModel.startRecording()
             }
         }
     }

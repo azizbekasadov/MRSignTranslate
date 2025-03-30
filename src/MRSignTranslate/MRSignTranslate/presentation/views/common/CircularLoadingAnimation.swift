@@ -45,7 +45,7 @@ struct CircularLoadingAnimation: View {
 struct SimpleSpinnerView: View {
     @State private var isAnimating = false
     
-    var color: Color = Color(.redHighlight)
+    var color: Color = Color.accent
     var lineWidth: CGFloat = 5
     var size: CGFloat = 50
     
@@ -79,4 +79,8 @@ struct CircularLoadingAnimation_Previews: PreviewProvider {
         .padding()
         .previewLayout(.sizeThatFits)
     }
+}
+
+#Preview {
+    SimpleSpinnerView()
 }

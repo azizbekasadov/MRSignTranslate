@@ -34,7 +34,6 @@ struct SplashScreen: View {
             } else {
                 Button {
                     print("Tapped")
-//                    viewModel.dispatch(.checkLoginState)
                     DispatchQueue.main.async {
                         self.dismiss.callAsFunction()
                         self.openWindow.callAsFunction(id: MRSignTranslateApp.WindowGroupIdentifiers.privacy)

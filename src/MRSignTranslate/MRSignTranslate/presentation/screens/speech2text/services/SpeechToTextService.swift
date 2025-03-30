@@ -8,6 +8,7 @@
 import AVFoundation
 import Foundation
 import Speech
+import NaturalLanguage
 
 final class Speech2ToTextService: @preconcurrency SpeechToTextServiceProtocol {
     private var accumulatedText: String = ""
@@ -17,9 +18,13 @@ final class Speech2ToTextService: @preconcurrency SpeechToTextServiceProtocol {
     private var task: SFSpeechRecognitionTask?
     private let recognizer: SFSpeechRecognizer?
     
+    private var isLanguageChecked = false
+    private var currentLocaleIdentifier: String
+    
     /// Initializes a new instance of the speech recognition service with the provided locale identifier.
     /// - Parameter localeIdentifier: The locale identifier to use (defaults to the device's current locale).
     init(localeIdentifier: String = Locale.current.identifier) {
+        self.currentLocaleIdentifier = localeIdentifier
         self.recognizer = SFSpeechRecognizer(locale: Locale(identifier: localeIdentifier))
     }
     
@@ -49,8 +54,6 @@ final class Speech2ToTextService: @preconcurrency SpeechToTextServiceProtocol {
         reset()
     }
     
-    /// Starts the speech-to-text transcription process.
-    /// - Returns: An `AsyncThrowingStream` that emits strings of transcribed text.
     @MainActor
     func transcribe() -> AsyncThrowingStream<String, Error> {
         AsyncThrowingStream { continuation in
@@ -64,10 +67,8 @@ final class Speech2ToTextService: @preconcurrency SpeechToTextServiceProtocol {
                         throw RecognizerError.recognizerUnavailable
                     }
                     
-                    self.task = recognizer.recognitionTask(with: request) { [weak self] result, error in
-                        guard let self = self else {
-                            return
-                        }
+                    self.task = recognizer.recognitionTask(with: request, resultHandler: { [weak self] result, error in
+                        guard let self = self else { return }
                         
                         if let error = error {
                             continuation.finish(throwing: error)
@@ -84,12 +85,28 @@ final class Speech2ToTextService: @preconcurrency SpeechToTextServiceProtocol {
                                 self.accumulatedText += newText + " "
                             }
                             
+                            if !self.isLanguageChecked && self.accumulatedText.split(separator: " ").count >= 3 {
+                                if let detectedLang = self.detectLanguage(from: self.accumulatedText),
+                                   let mappedLocale = Self.languageMapping[detectedLang],
+                                   mappedLocale != self.currentLocaleIdentifier {
+                                    
+                                    self.isLanguageChecked = true
+                                    logger.info("🌐 Detected language: \(detectedLang) → \(mappedLocale)")
+                                    self.stopTranscribing()
+                                    self.currentLocaleIdentifier = mappedLocale
+                                    continuation.finish()
+                                    return
+                                }
+                                self.isLanguageChecked = true
+                            }
+                            
                             if result.isFinal {
                                 continuation.finish()
                                 self.reset()
                             }
                         }
-                    }
+                    })
+                    
                 } catch {
                     continuation.finish(throwing: error)
                     self.reset()
@@ -97,6 +114,15 @@ final class Speech2ToTextService: @preconcurrency SpeechToTextServiceProtocol {
             }
         }
     }
+    
+    static let languageMapping: [String: String] = [
+        "en": "en-US",
+        "de": "de-DE",
+        "es": "es-ES",
+        "fr": "fr-FR",
+        "it": "it-IT",
+        // Add more as needed
+    ]
     
     /// Stops the transcription process and releases associated resources.
     func stopTranscribing() {
@@ -136,5 +162,16 @@ final class Speech2ToTextService: @preconcurrency SpeechToTextServiceProtocol {
         try audioEngine.start()
         
         return (audioEngine, request)
+    }
+    
+    func detectLanguage(from text: String) -> String? {
+        let recognizer = NLLanguageRecognizer()
+        recognizer.processString(text)
+        
+        guard let language = recognizer.dominantLanguage else {
+            return nil
+        }
+        
+        return language.rawValue // e.g. "en", "de", "es"
     }
 }

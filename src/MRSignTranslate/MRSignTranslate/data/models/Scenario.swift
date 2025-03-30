@@ -16,8 +16,33 @@ struct Scenario: Identifiable, CustomLocalizedStringResourceConvertible {
     let description: String
     let instructions: [Instruction]
     let scenarioWindowId: String
+    let isImmersiveWindow: Bool
     
     let localizedStringResource: LocalizedStringResource
+    
+    init(
+        id: String = UUID().uuidString,
+        title: String,
+        thumbnail: String,
+        backgroundImage: String,
+        level: Level,
+        description: String,
+        instructions: [Instruction],
+        scenarioWindowId: String,
+        isImmersiveWindow: Bool = false,
+        localizedStringResource: LocalizedStringResource
+    ) {
+        self.id = id
+        self.title = title
+        self.thumbnail = thumbnail
+        self.backgroundImage = backgroundImage
+        self.level = level
+        self.description = description
+        self.instructions = instructions
+        self.scenarioWindowId = scenarioWindowId
+        self.isImmersiveWindow = isImmersiveWindow
+        self.localizedStringResource = localizedStringResource
+    }
 }
 
 typealias Instruction = String // TODO: set up Instruction object

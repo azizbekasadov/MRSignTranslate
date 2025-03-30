@@ -21,6 +21,11 @@ struct MRSignTranslateApp: App {
         static let avatar: String = "MRSignTranslate.MainWindowGroup.avatar"
         static let translator: String = "MRSignTranslate.MainWindowGroup.translator"
         static let privacy: String = "MRSignTranslate.MainWindowGroup.privacy"
+        static let skeletonOnly: String = "MRSignTranslate.MainWindowGroup.skeletonOnly"
+        
+        static let allCases: [String] = [
+            WindowGroupIdentifiers.main, WindowGroupIdentifiers.bubble, WindowGroupIdentifiers.captions, WindowGroupIdentifiers.skeleton, WindowGroupIdentifiers.avatar, WindowGroupIdentifiers.translator, WindowGroupIdentifiers.privacy
+        ]
     }
     
     @StateObject private var router = MainRouter()
@@ -36,12 +41,7 @@ struct MRSignTranslateApp: App {
     
     @ViewBuilder
     private func MainSceneryView() -> some View {
-//        if SettingsConfigurationManager.shared.hasShownWelcomeMessage {
             MainSplitView()
-//        } else {
-//            SplashScreen()
-//                .frame(width: 1000, height: 750)
-//        }
     }
     
     @ViewBuilder
@@ -57,7 +57,6 @@ struct MRSignTranslateApp: App {
         }
         .windowResizability(.contentSize)
         
-        /// Used for Captions Scenario
         WindowGroup(id: WindowGroupIdentifiers.captions) {
             Speech2CaptionsView()
         }
@@ -84,22 +83,22 @@ struct MRSignTranslateApp: App {
             SpeechBubbleWithSignMTView()
         }
         .windowStyle(.volumetric)
-        .defaultSize(width: 1.5, height: 1.1, depth: 0.8, in: .meters)
+        .defaultSize(width: 1, height: 1, depth: 1.2, in: .meters)
         .windowResizability(.contentSize)
         
+        WindowGroup(id: WindowGroupIdentifiers.skeletonOnly) {
+            SkeletonView()
+        }
         .windowStyle(.volumetric)
         .defaultSize(width: 0.8, height: 0.8, depth: 0.8, in: .meters)
         .windowResizability(.contentSize)
         
-        ImmersiveSpace(id: WindowGroupIdentifiers.bubble) {
+        WindowGroup(id: WindowGroupIdentifiers.bubble) {
             SpeechBubbleView()
         }
-        .immersiveContentBrightness(.automatic)
-        .windowStyle(.volumetric)
-        
-        ImmersiveSpace(id: WindowGroupIdentifiers.avatar) {
-//            AvatarView()
-        }
+        .windowStyle(.plain)
+        .defaultSize(width: 1.5, height: 1.1, depth: 0.8, in: .meters)
+        .windowResizability(.contentSize)
      }
 }
 
