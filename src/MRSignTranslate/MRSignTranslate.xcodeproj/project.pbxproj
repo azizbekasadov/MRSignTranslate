@@ -271,7 +271,7 @@
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "MRSignTranslate needs access to your microphone for speech recognition";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "MRSignTranslate needs access to speech recognition will be used to transcribe audio for translation";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -307,7 +307,7 @@
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "MRSignTranslate needs access to your microphone for speech recognition";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "MRSignTranslate needs access to speech recognition will be used to transcribe audio for translation";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

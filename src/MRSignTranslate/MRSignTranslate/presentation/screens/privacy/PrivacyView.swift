@@ -85,6 +85,9 @@ struct PrivacyScreen: View {
 //        .frame(maxWidth: 700, maxHeight: 350)
         .glassBackgroundEffect(in: .rect(cornerRadius: 24))
         .padding()
+        .onDisappear {
+            openWindow.callAsFunction(id: MRSignTranslateApp.WindowGroupIdentifiers.main)
+        }
     }
 }
 

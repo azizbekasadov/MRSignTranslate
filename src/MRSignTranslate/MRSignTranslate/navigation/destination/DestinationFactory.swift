@@ -21,7 +21,13 @@ enum DestinationFactory {
             EmptyView()
                 .navigationBarBackButtonHidden()
         case .home:
-            MainSplitView()
+            MainSplitView(
+                isShowMainView: .constant(true),
+                isCaptionsVisible: .constant(true),
+                isSkeletonVisible:  .constant(true),
+                isSkeletonOnlyVisible:  .constant(true),
+                isBubbleVisible:  .constant(true)
+            )
                 .navigationBarBackButtonHidden()
                 .transition(.scale(scale: 1.2).combined(with: .opacity))
         case .recordings: EmptyView().navigationBarBackButtonHidden()

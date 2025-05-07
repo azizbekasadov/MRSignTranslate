@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Scenario: Identifiable, CustomLocalizedStringResourceConvertible {
+struct Scenario: Identifiable, Hashable {
     let id: String
     let title: String
     let thumbnail: String
@@ -17,8 +17,8 @@ struct Scenario: Identifiable, CustomLocalizedStringResourceConvertible {
     let instructions: [Instruction]
     let scenarioWindowId: String
     let isImmersiveWindow: Bool
-    
-    let localizedStringResource: LocalizedStringResource
+    let type: ScenarioType
+    let localizedStringResource: String
     
     init(
         id: String = UUID().uuidString,
@@ -30,7 +30,8 @@ struct Scenario: Identifiable, CustomLocalizedStringResourceConvertible {
         instructions: [Instruction],
         scenarioWindowId: String,
         isImmersiveWindow: Bool = false,
-        localizedStringResource: LocalizedStringResource
+        type: ScenarioType,
+        localizedStringResource: String
     ) {
         self.id = id
         self.title = title
@@ -41,6 +42,7 @@ struct Scenario: Identifiable, CustomLocalizedStringResourceConvertible {
         self.instructions = instructions
         self.scenarioWindowId = scenarioWindowId
         self.isImmersiveWindow = isImmersiveWindow
+        self.type = type
         self.localizedStringResource = localizedStringResource
     }
 }

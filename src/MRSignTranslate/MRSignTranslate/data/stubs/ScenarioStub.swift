@@ -35,7 +35,7 @@ extension Scenario {
             description: "A floating speech bubble near the real person displays live transcriptions of sign language into text for seamless communication.",
             instructions: ["Step 1", "Step 2"],
             scenarioWindowId: MRSignTranslateApp.WindowGroupIdentifiers.bubble,
-            isImmersiveWindow: true,
+            type: .bubble,
             localizedStringResource: "NEW GAME"
         ),
         Scenario(
@@ -46,7 +46,9 @@ extension Scenario {
             level: .medium,
             description: "Live captions appear near the person in the current camera frame, providing real-time subtitles for sign language interpretation.",
             instructions: ["Step 1", "Step 2"],
-            scenarioWindowId: MRSignTranslateApp.WindowGroupIdentifiers.captions, localizedStringResource: "PRE-ORDER"
+            scenarioWindowId: MRSignTranslateApp.WindowGroupIdentifiers.captions,
+            type: .captions,
+            localizedStringResource: "PRE-ORDER"
         ),
         Scenario(
             id: "scenario-3-avatar",
@@ -56,7 +58,9 @@ extension Scenario {
             level: .hard,
             description: "A digital avatar mimics the real person, translating spoken language into sign language gestures for accessibility.",
             instructions: ["Step 1", "Step 2"],
-            scenarioWindowId: MRSignTranslateApp.WindowGroupIdentifiers.skeleton, localizedStringResource: "LIMITED TIME"
+            scenarioWindowId: MRSignTranslateApp.WindowGroupIdentifiers.skeleton,
+            type: .skeleton,
+            localizedStringResource: "LIMITED TIME"
         ),
         Scenario(
             id: "scenario-5-chat",
@@ -67,6 +71,7 @@ extension Scenario {
             description: "A digital skeleton avatar that will translate speech right instantly from speech",
             instructions: ["Step 1", "Step 2", "Step 3"],
             scenarioWindowId: MRSignTranslateApp.WindowGroupIdentifiers.skeletonOnly,
+            type: .skeletonOnly,
             localizedStringResource: "LIMITED TIME"
         ),
         Scenario(
@@ -77,7 +82,10 @@ extension Scenario {
             level: .hard,
             description: "A dynamic chatroom where multiple people converse, with AI avatars translating spoken language into sign language for inclusive communication.",
             instructions: ["Step 1", "Step 2", "Step 3"],
-            scenarioWindowId: MRSignTranslateApp.WindowGroupIdentifiers.avatar, localizedStringResource: "LIMITED TIME"
+            scenarioWindowId: MRSignTranslateApp.WindowGroupIdentifiers.avatar,
+            isImmersiveWindow: true,
+            type: .avatar,
+            localizedStringResource: "LIMITED TIME"
         ),
     ]
 }

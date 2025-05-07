@@ -67,9 +67,30 @@ struct ScenariosView: View {
     @State private var selectedSmallScenarioType: ScenarioSmallRectItem? = nil
     @State private var showSheet: Bool = false
     
+    // required for
+    @Binding private var isShowMainView: Bool
+    @Binding private var isCaptionsVisible: Bool
+    @Binding private var isSkeletonVisible: Bool
+    @Binding private var isSkeletonOnlyVisible: Bool
+    @Binding private var isBubbleVisible: Bool
+    
     private let viewModel = ScenariosViewModel(
         dataProvider: ScenariosDataProvider()
     )
+    
+    init(
+        isShowMainView: Binding<Bool>,
+        isCaptionsVisible: Binding<Bool>,
+        isSkeletonVisible: Binding<Bool>,
+        isSkeletonOnlyVisible: Binding<Bool>,
+        isBubbleVisible: Binding<Bool>
+    ) {
+        self._isShowMainView = isShowMainView
+        self._isCaptionsVisible = isCaptionsVisible
+        self._isSkeletonVisible = isSkeletonVisible
+        self._isSkeletonOnlyVisible = isSkeletonOnlyVisible
+        self._isBubbleVisible = isBubbleVisible
+    }
     
     @ViewBuilder
     private func MainGridView() -> some View {
@@ -103,9 +124,17 @@ struct ScenariosView: View {
     
     private func openScenario() {
         if let scenario = self.selectedScenario {
-            openWindow.callAsFunction(
-                id: scenario.scenarioWindowId
-            )
+            if scenario.isImmersiveWindow {
+                Task {
+                    await openImmersiveSpace.callAsFunction(
+                        id: scenario.scenarioWindowId
+                    )
+                }
+            } else {
+                openWindow.callAsFunction(
+                    id: scenario.scenarioWindowId
+                )
+            }
         }
     }
     
@@ -154,8 +183,7 @@ struct ScenariosView: View {
                                 }
                             }
                             if columnItems.count == 1 {
-                                ScenarioSmallRectView(item: columnItems[0])
-                                {
+                                ScenarioSmallRectView(item: columnItems[0]) {
                                     selectedSmallScenarioType = columnItems[0]
                                 }
                                 .opacity(0)
@@ -201,9 +229,16 @@ struct ScenariosView: View {
     }
 }
 
-#Preview(body: {
-    NavigationStack {
-        ScenariosView()
+#Preview(
+    body: {
+        NavigationStack {
+            ScenariosView(
+                isShowMainView: .constant(true),
+                isCaptionsVisible: .constant(false),
+                isSkeletonVisible: .constant(false),
+                isSkeletonOnlyVisible: .constant(false),
+                isBubbleVisible: .constant(false)
+            )
             .navigationTitle("Scenarios")
     }
 })

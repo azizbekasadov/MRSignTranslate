@@ -9,24 +9,35 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 import MRSignMTKit
+import MRSignMTArchitecture
 import Combine
 
-struct SpeechBubbleView: View {
+struct SpeechBubbleView: HidingWindowViewProtocol {
     @StateObject private var viewModel = Speech2ToTextViewModel()
+    @State private var viewType: MainContentViewType = .simpleBubble
     
     private var cancellables = Set<AnyCancellable>()
+
+    @Environment(\.openWindow) private var openWindow
     
-    var body: some View {
-        #if targetEnvironment(simulator)
-        VStack {
-            Spacer()
-            SpeechBubble(text: $viewModel.transcript)
-                .onAppear {
-                    viewModel.startRecording()
-                }
-                .padding(.bottom, 20)
-        }
-        #else
+    @Binding var showMainWindow: Bool
+    @Binding var isVisible: Bool
+    
+    init(isVisible: Binding<Bool>) {
+        self._isVisible = isVisible
+        self._showMainWindow = .constant(true)
+    }
+    
+    init(
+        showMainWindow: Binding<Bool>,
+        isVisible: Binding<Bool>
+    ) {
+        self._showMainWindow = showMainWindow
+        self._isVisible = isVisible
+    }
+    
+    @ViewBuilder
+    private func MRRealityBubleView() -> some View {
         RealityView { content in
             let textEntity = createTextEntity(text: viewModel.transcript)
             let anchor = AnchorEntity(world: [0, 0, -1]) // Default position
@@ -44,7 +55,39 @@ struct SpeechBubbleView: View {
         .onAppear {
             viewModel.startRecording()
         }
-        #endif
+        .onDisappear {
+            openWindow.callAsFunction(id: MRSignTranslateApp.WindowGroupIdentifiers.main)
+        }
+    }
+    
+    @ViewBuilder
+    private func MainContentBubbleView() -> some View {
+        VStack(alignment: .center) {
+            Spacer()
+            SpeechBubble(text: $viewModel.transcript)
+                .onAppear {
+                    viewModel.startRecording()
+                }
+        }
+    }
+    
+    enum MainContentViewType: Int {
+        case simpleBubble
+        case realityBubble
+    }
+    
+    @ViewBuilder
+    private func setupMainView() -> some View {
+        switch viewType {
+        case .realityBubble:
+            MRRealityBubleView()
+        case .simpleBubble:
+            MainContentBubbleView()
+        }
+    }
+    
+    var body: some View {
+        setupMainView()
     }
 
     private func createTextEntity(text: String) -> ModelEntity {
@@ -56,13 +99,34 @@ struct SpeechBubbleView: View {
 }
 
 
-struct SpeechBubbleWithSignMTView: View {
+struct SpeechBubbleWithSignMTView: HidingWindowViewProtocol {
     @StateObject private var speechViewModel = Speech2ToTextViewModel()
     
     @Bindable var viewModel = MRWebViewViewModel(
         textToInject: "Start Speaking...",
         customJavaScript: SignMTInputText.zoom(3).makeScript() //hideAllButSkeleton(input: "Hello!").makeScript()
     )
+    @Binding var showMainWindow: Bool
+    @Binding var isVisible: Bool
+    @Environment(\.openWindow) private var openWindow
+    
+    init(isVisible: Binding<Bool>) {
+        self._isVisible = isVisible
+        self._showMainWindow = .constant(true)
+    }
+    
+    init(
+        viewModel: MRWebViewViewModel = MRWebViewViewModel(
+            textToInject: "Start Speaking...",
+            customJavaScript: SignMTInputText.zoom(3).makeScript() //hideAllButSkeleton(input: "Hello!").makeScript()
+        ),
+        showMainWindow: Binding<Bool>,
+        isVisible: Binding<Bool>
+    ) {
+        self.viewModel = viewModel
+        self._showMainWindow = showMainWindow
+        self._isVisible = isVisible
+    }
     
     var body: some View {
         viewModel.textToInject = speechViewModel.transcript
@@ -75,11 +139,12 @@ struct SpeechBubbleWithSignMTView: View {
             )
             .zoomed(4)
             .make()
-            .frame(width: 500, height: 700)
-            .padding(.top, -60)
-            .padding(.bottom, -120)
+            .frame(width: 550, height: 1000)
+            .padding(.top, -100)
+            .padding(.bottom, -200)
             .background(Color(hex: "#202124"))
             .cornerRadius(32, corners: .allCorners)
+            .glassBackgroundEffect()
             
             Spacer()
                 .frame(width: 200)
@@ -94,5 +159,10 @@ struct SpeechBubbleWithSignMTView: View {
                 speechViewModel.startRecording()
             }
         }
+        .frame(depth: 1.2)
+        .onDisappear {
+            openWindow.callAsFunction(id: MRSignTranslateApp.WindowGroupIdentifiers.main)
+        }
+        
     }
 }

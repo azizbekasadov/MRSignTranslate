@@ -13,6 +13,12 @@ struct MainSplitView: View {
     @Inject private var router: MainRouter
     @State private var selectedSection: SidebarSection? = .scenarios
     
+    @Binding private var isShowMainView: Bool
+    @Binding private var isCaptionsVisible: Bool
+    @Binding private var isSkeletonVisible: Bool
+    @Binding private var isSkeletonOnlyVisible: Bool
+    @Binding private var isBubbleVisible: Bool
+    
     private let sections: [SidebarSection] = [
         .scenarios,
         .history,
@@ -20,6 +26,20 @@ struct MainSplitView: View {
     ].sorted(
         by: { $0.order < $1.order }
     )
+    
+    init(
+        isShowMainView: Binding<Bool>,
+        isCaptionsVisible: Binding<Bool>,
+        isSkeletonVisible: Binding<Bool>,
+        isSkeletonOnlyVisible: Binding<Bool>,
+        isBubbleVisible: Binding<Bool>
+    ) {
+        self._isShowMainView = isShowMainView
+        self._isCaptionsVisible = isCaptionsVisible
+        self._isSkeletonVisible = isSkeletonVisible
+        self._isSkeletonOnlyVisible = isSkeletonOnlyVisible
+        self._isBubbleVisible = isBubbleVisible
+    }
     
     var body: some View {
         NavigationSplitView {
@@ -34,7 +54,12 @@ struct MainSplitView: View {
     private func DetailView() -> some View {
         if let selectedSection {
             MRSignTranslate.DetailView(
-                selectedSection: selectedSection
+                selectedSection: selectedSection,
+                isShowMainView: $isShowMainView,
+                isCaptionsVisible: $isCaptionsVisible,
+                isSkeletonVisible: $isSkeletonVisible,
+                isSkeletonOnlyVisible: $isSkeletonOnlyVisible,
+                isBubbleVisible: $isBubbleVisible
             )
             .id(selectedSection.id)
         } else {
@@ -78,8 +103,4 @@ struct MainSplitView: View {
             .padding(10)
     }
     
-}
-
-#Preview {
-    MainSplitView()
 }

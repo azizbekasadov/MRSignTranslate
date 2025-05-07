@@ -6,9 +6,26 @@
 //
 
 import SwiftUI
+import MRSignMTArchitecture
 
-struct Speech2CaptionsView: View {
+struct Speech2CaptionsView: HidingWindowViewProtocol {
+    
     @StateObject private var viewModel = Speech2ToTextViewModel()
+    @Binding private var isVisible: Bool
+    @Binding private var showMainWindow: Bool
+    
+    init(isVisible: Binding<Bool>) {
+        self._isVisible = isVisible
+        self._showMainWindow = .constant(true)
+    }
+    
+    init(
+        showMainWindow: Binding<Bool>,
+        isVisible: Binding<Bool>
+    ) {
+        self._isVisible = isVisible
+        self._showMainWindow = showMainWindow
+    }
     
     var body: some View {
         VStack {
@@ -31,6 +48,9 @@ struct Speech2CaptionsView: View {
         .onAppear {
             toggleRecord()
         }
+        .onDisappear {
+            showMainWindow = true
+        }
     }
     
     private func toggleRecord() {
@@ -43,5 +63,5 @@ struct Speech2CaptionsView: View {
 }
 
 #Preview {
-    Speech2CaptionsView()
+    Speech2CaptionsView(isVisible: .constant(true))
 }
