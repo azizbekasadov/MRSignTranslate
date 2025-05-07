@@ -13,6 +13,11 @@ import MRSignMTArchitecture
 
 @main
 struct MRSignTranslateApp: App {
+    private enum AppVersion {
+        case largeMenu
+        case listMenu
+    }
+    
     enum WindowGroupIdentifiers {
         static let main: String = "MRSignTranslate.MainWindowGroup.main"
         static let bubble: String = "MRSignTranslate.MainWindowGroup.bubble"
@@ -58,27 +63,36 @@ struct MRSignTranslateApp: App {
         } // showing the main content view MainSplitView()
     }
     
+    // drum chan man numme mit verschiidni versionän zsäme wächsle
     @ViewBuilder
-    private func TabViewBuilder() -> some View {
-//        MainSceneryView()
-        NavigationView {
-            MenuScenarioListView(
-                viewModel: MenuScenarioListViewModel(
-                    scenarios: Scenario.scenarios
+    private func TabViewBuilder(
+        _ version: AppVersion = .listMenu
+    ) -> some View {
+        switch version {
+        case .largeMenu:
+            MainSceneryView()
+                .preferredColorScheme(.dark)
+                .modelContainer(dataStorageManager.selectedContainer)
+        case .listMenu:
+            NavigationView {
+                MenuScenarioListView(
+                    viewModel: MenuScenarioListViewModel(
+                        scenarios: Scenario.scenarios
+                    )
                 )
-            )
-            .layoutPriority(1)
-        }
-        .navigationViewStyle(.stack)
-        .frame(width: 600)
-        .frame(maxHeight: .infinity)
+                .layoutPriority(1)
+            }
+            .navigationViewStyle(.stack)
+            .frame(width: 600)
+            .frame(maxHeight: .infinity)
             .preferredColorScheme(.dark)
             .modelContainer(dataStorageManager.selectedContainer)
+        }
     }
     
     var body: some Scene {
         WindowGroup(id: WindowGroupIdentifiers.main) {
-            TabViewBuilder()
+            TabViewBuilder(.listMenu)
         }
         .windowResizability(.contentSize)
         .defaultSize(width: 600, height: 800)
