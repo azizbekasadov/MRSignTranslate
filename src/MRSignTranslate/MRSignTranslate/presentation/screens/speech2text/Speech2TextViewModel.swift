@@ -11,8 +11,9 @@ import Observation
 import MRSignMTArchitecture
 
 final class SpeechToTextViewModel: ObservableObject {
-    @Published private(set) var transcribedText: String = ""
-    private let speechService: SpeechRecognitionService
+    @Published private(set) var transcribedText: String = "You will read captions here"
+    
+    private(set) var speechService: SpeechRecognitionService
     
     init(speechService: SpeechRecognitionService) {
         self.speechService = speechService

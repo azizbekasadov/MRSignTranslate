@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import MRSignMTKit
+
+
 
 struct LanguageListView: View {
     let destination: SettingsCategories.General
@@ -69,9 +72,9 @@ struct ListRow: View {
                 .frame(width: 32, height: 32)
             VStack(alignment: .leading) {
                 Text(item.title) // Localized name
-                    .font(.title)
+                    .font(.headline)
                 Text(item.description) // Display name
-                    .font(.title2)
+                    .font(.subheadline)
                     .foregroundColor(.gray)
             }
         }

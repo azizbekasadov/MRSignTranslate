@@ -68,6 +68,8 @@ extension SpeechToTextService {
         
         recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { result, error in
             if let result = result {
+                logger.info(.init(stringLiteral: result.bestTranscription.formattedString))
+                
                 DispatchQueue.main.async {
                     self.transcribedText = result.bestTranscription.formattedString
                 }

@@ -26,7 +26,11 @@ actor UserUseCases {
     }
     
     func login(userName: String, password: String, simulatedUser: String) async throws -> LoginState {
-        let loginState = try await userRepository.login(userName: userName, password: password, simulatedUser: simulatedUser)
+        let loginState = try await userRepository.login(
+            userName: userName,
+            password: password,
+            simulatedUser: simulatedUser
+        )
 
         if loginState == .demoUser {
             logger.info("Setting Preview ModelContainer")

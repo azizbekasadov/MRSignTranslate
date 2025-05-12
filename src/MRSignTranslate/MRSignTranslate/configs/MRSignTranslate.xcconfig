@@ -1,0 +1,14 @@
+//
+//  MRSignTranslate.xcconfig
+//  MRSignTranslate
+//
+//  Created by Azizbek Asadov on 10.03.2025.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+MRSignTranslate_MARKETING_VERSION = 0.0.1
+MRSignTranslate_IDENTIFIER = MRSignTranslate
+MRSignTranslate_PREPROCESSOR_IDENTIFIER = JCT
+MRSignTranslate_PRODUCT_NAME_BASE = MRSignTranslate

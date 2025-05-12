@@ -9,6 +9,11 @@ import Foundation
 import SwiftUI
 
 extension View {
+    
+    var anyView: AnyView {
+        .init(self)
+    }
+    
     func border(width: CGFloat, edges: [Edge], color: Color) -> some View {
         overlay(EdgeBorder(width: width, edges: edges).foregroundColor(color))
     }

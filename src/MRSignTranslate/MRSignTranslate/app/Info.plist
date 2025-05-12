@@ -2,11 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>We need access to your microphone to enable voice interactions and allow you to speak commands or provide input directly to the app.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We use speech recognition to provide a more interactive and hands-free experience by allowing you to speak directly to the app for certain actions or features</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationPreferredDefaultSceneSessionRole</key>
 		<string>UIWindowSceneSessionRoleApplication</string>
 		<key>UIApplicationSupportsMultipleScenes</key>
+		<true/>
+		<key>UIApplicationSupportsTabbedSceneCollection</key>
 		<true/>
 		<key>UISceneConfigurations</key>
 		<dict>

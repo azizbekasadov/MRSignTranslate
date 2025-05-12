@@ -7,23 +7,38 @@
 
 import Foundation
 import Observation
+import SwiftUI
 
-public protocol NavigationStackDestination: Equatable, Hashable, Codable, CustomStringConvertible {
+public protocol NavigationStackDestination: Equatable, Hashable, Codable {//, CustomStringConvertible {
     typealias Router = NavigationStackRouter<Self>
 }
 
 extension NavigationStackDestination {
-    public var description: String {
+    public var commonString: String {
        String(describing: self).components(separatedBy: "(").first ?? ""
     }
 }
 
-@Observable
-public class NavigationStackRouter<T: NavigationStackDestination> {
-    public var path = [T]()
+public protocol WindowType {
+    func getProviderID() -> String
+}
+
+public class NavigationStackRouter<T: NavigationStackDestination>: ObservableObject {
+    @Published public var path = [T]()
+    @Environment(\.openWindow) public var openWindow
 
     public init() {}
+    
+    public func setRoot(_ destination: T) {
+        logger.info("\(destination) will be a new root")
+        path.removeLast(path.count)
+        pushDestination(destination)
+    }
 
+    public func open(_ windowType: WindowType) {
+        openWindow.callAsFunction(id: windowType.getProviderID())
+    }
+    
     public func popToRoot() {
         logger.info("\(self) will pop to root")
         
@@ -52,10 +67,10 @@ public class NavigationStackRouter<T: NavigationStackDestination> {
     }
 
     public func goBack(to destination: T) {
-        logger.info(.init(stringLiteral: destination.description))
+        logger.info(.init(stringLiteral: destination.commonString))
         
         guard let index = path.firstIndex(of: destination) else {
-            let log = "\(self) did no find \(destination.description) in the view stack"
+            let log = "\(self) did no find \(destination.commonString) in the view stack"
             logger.warning("\(log)")
             logPath(path)
 //            assertionFailure(log)
@@ -65,7 +80,7 @@ public class NavigationStackRouter<T: NavigationStackDestination> {
     }
 
     private func logPath(_ path: [T]) {
-        let path = "\(path.map { $0.description }.joined(separator: ","))"
+        let path = "\(path.map { $0.commonString }.joined(separator: ","))"
         
         logger.info("\(self )count: \(path.count), path: \(path)")
     }

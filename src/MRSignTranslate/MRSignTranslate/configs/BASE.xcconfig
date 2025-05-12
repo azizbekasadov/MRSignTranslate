@@ -1,0 +1,39 @@
+//
+//  BASE.xcconfig
+//  MRSignTranslate
+//
+//  Created by Azizbek Asadov on 10.03.2025.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+REVERSE_URI = com.azizbekasadov.MRSignTranslate
+
+// Build Options
+ENABLE_BITCODE = NO
+
+// Linking
+OTHER_LDFLAGS = -ObjC -all_load -lxml2
+OTHER_SWIFT_FLAGS = -Xcc -fmodule-map-file=$(GENERATED_MODULEMAP_DIR)/MRSignTranslate.modulemap
+
+// Packaging
+BASE_PRODUCT_BUNDLE_IDENTIFIER = $(REVERSE_URI).$(TARGET_IDENTIFIER)
+PRODUCT_MODULE_NAME = MRSignTranslate
+
+// Versioning
+CURRENT_PROJECT_VERSION = 1 // will be set to CI_PIPELINE_ID in gitlab-ci before_script
+MARKETING_VERSION = $(TARGET_MARKETING_VERSION)
+
+// Apple Clang
+WARNING_CFLAGS = -Wno-objc-property-synthesis
+GCC_C_LANGUAGE_STANDARD = gnu99
+GCC_PRECOMPILE_PREFIX_HEADER = YES
+GCC_PREFIX_HEADER = MRSignTranslate/MRSignTranslate-Prefix.pch
+
+// Entitlement
+KEYCHAIN_ACCESS_GROUP = $(AppIdentifierPrefix)$(REVERSE_URI).sharedKeychain
+APP_GROUP_MAIN = group.$(REVERSE_URI)
+APS_ENVIRONMENT = development
+
+DEVELOPMENT_ASSET_PATHS = "Preview Content"

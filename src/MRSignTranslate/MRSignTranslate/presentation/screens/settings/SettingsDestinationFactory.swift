@@ -10,32 +10,43 @@ import SwiftUI
 enum SettingsDestinationFactory {
     
     @ViewBuilder
-    static func viewForDemoDestination(_ destination: SettingsDestination) -> some View {
+    static func viewForDemoDestination(
+        _ destination: SettingsDestination
+    ) -> some View {
         switch destination {
         case .general(let option):
             switch option {
             case .language: LanguageListView(destination: option)
-            case .appearance: SettingsDetailView(destination: destination)
             case .privacy, .terms: LegalWebView(destination: option)
+            default:
+                SettingsDetailView(
+                    viewModel: .init(destination: destination)
+                )
             }
         case .mode(let option):
             switch option {
             case .offlineOnline:
-                SettingsDetailView(destination: destination)
+                SettingsDetailView(
+                    viewModel: .init(destination: destination)
+                )
             }
         case .support(let option):
             switch option {
-            case .contactUs:
-                SettingsDetailView(destination: destination)
-            case .about:
-                SettingsDetailView(destination: destination)
+            default:
+                SettingsDetailView(
+                    viewModel: .init(destination: destination)
+                )
             }
         case .voice(let option):
             switch option {
             case .input:
-                SettingsDetailView(destination: destination)
+                SettingsDetailView(
+                    viewModel: .init(destination: destination)
+                )
             case .output:
-                SettingsDetailView(destination: destination)
+                SettingsDetailView(
+                    viewModel: .init(destination: destination)
+                )
             }
         }
     }

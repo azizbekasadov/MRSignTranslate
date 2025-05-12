@@ -13,9 +13,22 @@ enum SplashIntent {
     case checkLoginState
 }
 
+enum MainWindowType: String, WindowType {
+    case privacy
+    case main
+    
+    func getProviderID() -> String {
+        switch self {
+        case .privacy:
+            MRSignTranslateApp.WindowGroupIdentifiers.privacy
+        case .main:
+            MRSignTranslateApp.WindowGroupIdentifiers.main
+        }
+    }
+}
+
 @MainActor
 final class SplashViewModel: ObservableObject {
-
     @Inject private var router: MainRouter
     @Inject private var storageManager: DataStorageManager
     
@@ -30,29 +43,31 @@ final class SplashViewModel: ObservableObject {
         }
     }
     
-    init() {
-        
-    }
+    init() {}
     
     private func handleCheckLoginState() {
-        Task {
-            do {
-                let loginState = try await userUseCases.checkLoginState()
-                
-                switch loginState {
-                case .loggedIn, .superUser:
-                    await MainActor.run {
-                        router.pushDestination(.home)
-                    }
-                case .loggedOut, .demoUser:
-                    logger.info("Setting Store ModelContanier")
-                    storageManager.switchToStoreContainer()
-                    router.pushDestination(.login)
-                }
-            }
-            catch {
-                router.pushDestination(.login)
-            }
-        }
+        
+//        Task { @MainActor in
+//            do {
+//                let loginState = try await userUseCases.checkLoginState()
+//                
+//                switch loginState {
+//                case .loggedIn, .superUser:
+//                    await MainActor.run {
+//                        router.setRoot(.home)
+//                    }
+//                case .loggedOut, .demoUser:
+//                    logger.info("Setting Store ModelContanier")
+//                    storageManager.switchToStoreContainer()
+//                    router.pushDestination(.home)
+//                }
+//            }
+//            catch {
+//                router.pushDestination(.home)
+//            }
+//        }
+//        if !settingsConfigurator.hasShownWelcomeMessage {
+            router.open(MainWindowType.privacy)
+//        }
     }
 }

@@ -10,6 +10,7 @@ import Foundation
 
 import Foundation
 
+@Observable
 public final class InjectionContainer: @unchecked Sendable {
     // Use a private serial queue for thread safety
     private static let syncQueue = DispatchQueue(label: "com.injectioncontainer.sync")
@@ -64,3 +65,4 @@ public final class InjectionContainer: @unchecked Sendable {
         }
     }
 }
+ 

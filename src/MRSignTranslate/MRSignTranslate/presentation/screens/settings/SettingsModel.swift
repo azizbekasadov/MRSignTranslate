@@ -10,7 +10,8 @@ import SwiftUI
 
 @MainActor
 final class SettingsModel: ObservableObject {
-    @Inject private var router: SettingsRouter
+//    @Inject @Bindable var router: SettingsRouter
+    
     @Inject private var storageManager: DataStorageManager
     @Inject private var emailService: EmailServiceProtocol
     

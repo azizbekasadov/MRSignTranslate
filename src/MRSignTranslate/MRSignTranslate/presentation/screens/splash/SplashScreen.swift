@@ -10,6 +10,8 @@ import SwiftUI
 import SwiftData
 
 struct SplashScreen: View {
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: SplashViewModel = .init()
 
     var body: some View {
@@ -31,7 +33,11 @@ struct SplashScreen: View {
                 ProgressView()
             } else {
                 Button {
-                    viewModel.dispatch(.checkLoginState)
+                    print("Tapped")
+                    DispatchQueue.main.async {
+                        self.dismiss.callAsFunction()
+                        self.openWindow.callAsFunction(id: MRSignTranslateApp.WindowGroupIdentifiers.privacy)
+                    }
                 } label: {}
                 .buttonStyle(
                     GlassButtonStyle(
@@ -39,11 +45,11 @@ struct SplashScreen: View {
                         size: CGSize(width: 150, height: 80)
                     )
                 )
+                .hoverEffect()
             }
         }
         .padding(.top, 150)
         .padding([.horizontal, .bottom], 50)
-        
     }
 }
 

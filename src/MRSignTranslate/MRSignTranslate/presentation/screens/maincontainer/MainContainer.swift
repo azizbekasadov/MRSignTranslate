@@ -6,13 +6,40 @@
 //
 
 import SwiftUI
+import Observation
+import MRSignMTArchitecture
 
 struct MainSplitView: View {
-    @State private var selectedSection: SidebarSection? = .settings
+    @Inject private var router: MainRouter
+    @State private var selectedSection: SidebarSection? = .scenarios
     
-    private let sections: [SidebarSection] = SidebarSection.allCases.sorted(
+    @Binding private var isShowMainView: Bool
+    @Binding private var isCaptionsVisible: Bool
+    @Binding private var isSkeletonVisible: Bool
+    @Binding private var isSkeletonOnlyVisible: Bool
+    @Binding private var isBubbleVisible: Bool
+    
+    private let sections: [SidebarSection] = [
+        .scenarios,
+        .history,
+        .settings
+    ].sorted(
         by: { $0.order < $1.order }
     )
+    
+    init(
+        isShowMainView: Binding<Bool>,
+        isCaptionsVisible: Binding<Bool>,
+        isSkeletonVisible: Binding<Bool>,
+        isSkeletonOnlyVisible: Binding<Bool>,
+        isBubbleVisible: Binding<Bool>
+    ) {
+        self._isShowMainView = isShowMainView
+        self._isCaptionsVisible = isCaptionsVisible
+        self._isSkeletonVisible = isSkeletonVisible
+        self._isSkeletonOnlyVisible = isSkeletonOnlyVisible
+        self._isBubbleVisible = isBubbleVisible
+    }
     
     var body: some View {
         NavigationSplitView {
@@ -20,13 +47,19 @@ struct MainSplitView: View {
         } detail: {
             DetailView()
         }
+        .navigationSplitViewStyle(.prominentDetail)
     }
     
     @ViewBuilder
     private func DetailView() -> some View {
         if let selectedSection {
             MRSignTranslate.DetailView(
-                selectedSection: selectedSection
+                selectedSection: selectedSection,
+                isShowMainView: $isShowMainView,
+                isCaptionsVisible: $isCaptionsVisible,
+                isSkeletonVisible: $isSkeletonVisible,
+                isSkeletonOnlyVisible: $isSkeletonOnlyVisible,
+                isBubbleVisible: $isBubbleVisible
             )
             .id(selectedSection.id)
         } else {
@@ -36,15 +69,23 @@ struct MainSplitView: View {
     
     @ViewBuilder
     private func SideView() -> some View {
-        List(
-            sections,
-            id: \.self,
-            selection: $selectedSection
-        ) { section in
-            SectionView(section)
+        VStack {
+            List(
+                sections,
+                id: \.self,
+                selection: $selectedSection
+            ) { section in
+                SectionView(section)
+            }
+            .listStyle(.sidebar)
+            .navigationTitle("Menu")
+            
+            Spacer()
+            
+            UserFooterView()
+                .padding(.horizontal, 10)
+                .padding(.bottom, 24)
         }
-        .listStyle(.sidebar)
-        .navigationTitle("Menu")
     }
     
     @ViewBuilder
@@ -62,8 +103,4 @@ struct MainSplitView: View {
             .padding(10)
     }
     
-}
-
-#Preview {
-    MainSplitView()
 }

@@ -7,12 +7,12 @@
 
 import Foundation
 
-enum ScenarioType: Int, CustomStringConvertible {
-    case basic = 0
-    case aviation
-    case learnASL
-    case training
-    case conference
+enum ScenarioType: Int, CustomStringConvertible, Hashable {
+    case bubble
+    case captions
+    case skeleton
+    case skeletonOnly
+    case avatar
     
     var description: String {
         String(describing: self)
