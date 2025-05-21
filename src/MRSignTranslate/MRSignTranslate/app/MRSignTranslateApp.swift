@@ -91,11 +91,17 @@ struct MRSignTranslateApp: App {
     }
     
     var body: some Scene {
+        let tabType = AppVersion.listMenu
+        let windowFrame = CGSize(
+            width: tabType == .largeMenu ? 1200 : 600,
+            height: tabType == .largeMenu ? 1000 : 800
+        )
+        
         WindowGroup(id: WindowGroupIdentifiers.main) {
-            TabViewBuilder(.listMenu)
+            TabViewBuilder(tabType)
         }
         .windowResizability(.contentSize)
-        .defaultSize(width: 600, height: 800)
+        .defaultSize(width: windowFrame.width, height: windowFrame.height)
         
         WindowGroup(id: WindowGroupIdentifiers.captions) {
             if isCaptionsVisible {
